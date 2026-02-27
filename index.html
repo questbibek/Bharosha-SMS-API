@@ -182,12 +182,53 @@
   .response-example { font-family: 'Fira Code', monospace; font-size: 12px; background: var(--code-bg); padding: 10px 14px; border-radius: 6px; color: #e2e8f0; margin: 8px 0; word-break: break-all; }
   .response-card p { font-size: 13px; color: var(--muted); margin: 0; }
 
-  .api-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0; }
-  .api-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; transition: border-color .2s; cursor: pointer; text-decoration: none; display: block; }
-  .api-card:hover { border-color: rgba(0,229,160,.3); }
-  .api-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(0,229,160,.1); display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 12px; }
-  .api-card h4 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-  .api-card p { font-size: 12px; color: var(--muted); margin: 0; }
+  .api-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 28px 0; }
+  @media (min-width: 901px) { .api-grid { grid-template-columns: repeat(3, 1fr) !important; } }
+  .api-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    transition: all .2s ease;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .api-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,229,160,.04) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  .api-card:hover { border-color: rgba(0,229,160,.4); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+  .api-card:hover::before { opacity: 1; }
+  .api-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: rgba(0,229,160,.1);
+    border: 1px solid rgba(0,229,160,.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+  .api-card h4 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .api-card p { font-size: 12px; color: var(--muted); margin: 0; line-height: 1.5; }
+  .api-card-arrow {
+    position: absolute;
+    top: 20px; right: 20px;
+    font-size: 12px;
+    color: var(--muted);
+    opacity: 0;
+    transition: all .2s;
+    transform: translateX(-4px);
+  }
+  .api-card:hover .api-card-arrow { opacity: 1; transform: translateX(0); color: var(--accent); }
 
   .callout { background: rgba(0,119,255,.08); border: 1px solid rgba(0,119,255,.2); border-radius: 10px; padding: 14px 18px; font-size: 14px; color: #93c5fd; margin: 16px 0; display: flex; gap: 10px; }
   .callout-icon { flex-shrink: 0; font-size: 16px; }
@@ -414,14 +455,6 @@
     .params-table { font-size: 11px; }
     .free-api-card { padding: 14px; }
   }
-    .hero h1 { font-size: 28px; }
-    .apikey-banner { padding: 16px; }
-    .apply-btn, .gen-btn { font-size: 11px; padding: 9px 10px; }
-    .api-grid { grid-template-columns: 1fr; }
-    .free-title { font-size: 17px; }
-    .key-input-row input { font-size: 13px; padding: 9px 12px; }
-    #togglePassBtn { flex: 0 0 auto; }
-  }
 </style>
 </head>
 <body>
@@ -572,15 +605,15 @@
     <h2>API Types</h2>
     <p>All send endpoints share the same base URL and accept both GET and POST. Account endpoints use a separate URL pattern.</p>
     <div class="api-grid">
-      <a class="api-card" href="#text-sms"><div class="api-icon">💬</div><h4>Text SMS</h4><p>Standard SMS, up to 720 chars</p></a>
-      <a class="api-card" href="#flash-sms"><div class="api-icon">⚡</div><h4>Flash SMS</h4><p>Pop-up on recipient's screen</p></a>
-      <a class="api-card" href="#wap-push"><div class="api-icon">🔗</div><h4>WAP-Push</h4><p>Send clickable URL links</p></a>
-      <a class="api-card" href="#vcard"><div class="api-icon">👤</div><h4>vCard</h4><p>Send contact card information</p></a>
-      <a class="api-card" href="#unicode"><div class="api-icon">🌐</div><h4>Unicode SMS</h4><p>Multi-language &amp; emoji support</p></a>
-      <a class="api-card" href="#credit-balance"><div class="api-icon">💳</div><h4>Credit Balance</h4><p>Check remaining credits</p></a>
-      <a class="api-card" href="#dlr"><div class="api-icon">📊</div><h4>DLR</h4><p>Delivery reports by shoot ID</p></a>
-      <a class="api-card" href="#fetch-api-key"><div class="api-icon">🗝️</div><h4>Fetch API Key</h4><p>Retrieve key via credentials</p></a>
-      <a class="api-card" href="#last-transaction"><div class="api-icon">📋</div><h4>Last Transaction</h4><p>Most recent SMS shoot details</p></a>
+      <a class="api-card" href="#text-sms"><span class="api-card-arrow">→</span><div class="api-icon">💬</div><h4>Text SMS</h4><p>Standard SMS, up to 720 chars</p></a>
+      <a class="api-card" href="#flash-sms"><span class="api-card-arrow">→</span><div class="api-icon">⚡</div><h4>Flash SMS</h4><p>Pop-up on recipient's screen</p></a>
+      <a class="api-card" href="#wap-push"><span class="api-card-arrow">→</span><div class="api-icon">🔗</div><h4>WAP-Push</h4><p>Send clickable URL links</p></a>
+      <a class="api-card" href="#vcard"><span class="api-card-arrow">→</span><div class="api-icon">👤</div><h4>vCard</h4><p>Send contact card information</p></a>
+      <a class="api-card" href="#unicode"><span class="api-card-arrow">→</span><div class="api-icon">🌐</div><h4>Unicode SMS</h4><p>Multi-language &amp; emoji support</p></a>
+      <a class="api-card" href="#credit-balance"><span class="api-card-arrow">→</span><div class="api-icon">💳</div><h4>Credit Balance</h4><p>Check remaining credits</p></a>
+      <a class="api-card" href="#dlr"><span class="api-card-arrow">→</span><div class="api-icon">📊</div><h4>DLR</h4><p>Delivery reports by shoot ID</p></a>
+      <a class="api-card" href="#fetch-api-key"><span class="api-card-arrow">→</span><div class="api-icon">🗝️</div><h4>Fetch API Key</h4><p>Retrieve key via credentials</p></a>
+      <a class="api-card" href="#last-transaction"><span class="api-card-arrow">→</span><div class="api-icon">📋</div><h4>Last Transaction</h4><p>Most recent SMS shoot details</p></a>
     </div>
   </div>
 
