@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vrit SMS API Documentation</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0c10;
@@ -19,7 +19,8 @@
     --code-bg: #0d1017;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.7; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.75; font-size: 15px; }
+  h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; }
 
   .layout { display: flex; min-height: 100vh; }
 
@@ -34,7 +35,7 @@
   .nav-logo .brand { font-size: 13px; font-weight: 600; color: var(--accent); letter-spacing: .15em; text-transform: uppercase; }
   .nav-logo h2 { font-size: 18px; font-weight: 800; color: var(--text); margin-top: 4px; }
   .nav-section { padding: 8px 24px; font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: 16px; }
-  nav a { display: block; padding: 8px 24px; font-size: 14px; color: #94a3b8; text-decoration: none; transition: all .15s; border-left: 2px solid transparent; }
+  nav a { display: block; padding: 9px 24px; font-size: 14px; font-weight: 500; color: #94a3b8; text-decoration: none; transition: all .15s; border-left: 2px solid transparent; }
   nav a:hover, nav a.active { color: var(--accent); border-left-color: var(--accent); background: rgba(0,229,160,.05); }
 
   main { flex: 1; padding: 60px 64px; max-width: 960px; }
@@ -58,7 +59,7 @@
     background: var(--code-bg);
     border: 1px solid var(--border);
     color: var(--accent);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Fira Code', monospace;
     font-size: 15px;
     padding: 10px 16px;
     border-radius: 8px;
@@ -72,7 +73,7 @@
     border: none;
     padding: 10px 20px;
     border-radius: 8px;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 700;
     font-size: 13px;
     cursor: pointer;
@@ -86,7 +87,7 @@
     border: 1px solid var(--border);
     padding: 10px 18px;
     border-radius: 8px;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 600;
     font-size: 13px;
     cursor: pointer;
@@ -107,39 +108,39 @@
   .hero-meta { display: flex; gap: 32px; margin-top: 32px; flex-wrap: wrap; }
   .meta-item { display: flex; flex-direction: column; gap: 4px; }
   .meta-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
-  .meta-value { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent); }
+  .meta-value { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--accent); }
 
   /* SECTIONS */
   .section { margin-bottom: 72px; scroll-margin-top: 32px; }
   .section-tag { font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
   .section h2 { font-size: 32px; font-weight: 800; margin-bottom: 16px; color: #fff; }
   .section h3 { font-size: 20px; font-weight: 700; margin: 32px 0 12px; color: var(--text); }
-  .section p { color: #94a3b8; margin-bottom: 16px; font-size: 15px; }
+  .section p { color: #94a3b8; margin-bottom: 16px; font-size: 15px; line-height: 1.8; }
 
   .endpoint { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin: 12px 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .method { padding: 4px 12px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: .05em; white-space: nowrap; }
+  .method { padding: 4px 12px; border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 12px; font-weight: 700; letter-spacing: .05em; white-space: nowrap; }
   .method.get { background: rgba(0,119,255,.15); color: var(--accent2); border: 1px solid rgba(0,119,255,.3); }
   .method.post { background: rgba(0,229,160,.15); color: var(--accent); border: 1px solid rgba(0,229,160,.3); }
-  .endpoint-url { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #e2e8f0; word-break: break-all; }
+  .endpoint-url { font-family: 'Fira Code', monospace; font-size: 13px; color: #e2e8f0; word-break: break-all; }
   .endpoint-url .dyn { color: var(--accent); }
 
-  .params-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+  .params-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; line-height: 1.7; }
   .params-table th { text-align: left; padding: 10px 16px; background: var(--surface2); color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; border-bottom: 1px solid var(--border); }
   .params-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: #94a3b8; vertical-align: top; }
   .params-table tr:last-child td { border-bottom: none; }
   .params-table tr:hover td { background: rgba(255,255,255,.02); }
-  .param-name { font-family: 'JetBrains Mono', monospace; color: var(--accent2); font-size: 13px; }
+  .param-name { font-family: 'Fira Code', monospace; color: var(--accent2); font-size: 13px; }
   .param-required { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; background: rgba(255,77,109,.15); color: var(--accent3); border: 1px solid rgba(255,77,109,.2); }
   .param-optional { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; background: rgba(100,116,139,.15); color: var(--muted); border: 1px solid var(--border); }
-  .param-default { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #475569; margin-top: 4px; }
+  .param-default { font-family: 'Fira Code', monospace; font-size: 12px; color: #475569; margin-top: 4px; }
 
   .code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 16px 0; }
   .code-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: var(--surface2); border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
-  .code-lang { font-size: 12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
-  .copy-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 4px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all .15s; font-family: 'Syne', sans-serif; }
+  .code-lang { font-size: 12px; color: var(--muted); font-family: 'Fira Code', monospace; font-weight: 600; }
+  .copy-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 4px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all .15s; font-family: 'Inter', sans-serif; }
   .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
   .copy-btn.copied { border-color: var(--accent); color: var(--accent); }
-  pre { padding: 24px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.8; color: #e2e8f0; }
+  pre { padding: 24px; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 13.5px; line-height: 1.9; color: #e2e8f0; }
 
   .kw { color: #7c6af7; } .str { color: #86efac; } .var { color: #60a5fa; }
   .fn { color: #fbbf24; } .cm { color: #475569; font-style: italic; } .num { color: #f472b6; }
@@ -148,7 +149,7 @@
   pre .dyn-key { color: #00e5a0; }
 
   .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-  .tab-btn { padding: 8px 16px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); font-size: 13px; font-family: 'Syne', sans-serif; font-weight: 600; cursor: pointer; transition: all .15s; margin-bottom: -1px; }
+  .tab-btn { padding: 8px 16px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); font-size: 13px; font-family: 'Inter', sans-serif; font-weight: 600; cursor: pointer; transition: all .15s; margin-bottom: -1px; }
   .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
@@ -160,7 +161,7 @@
   .response-type { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
   .response-card.success .response-type { color: var(--accent); }
   .response-card.error .response-type { color: var(--accent3); }
-  .response-example { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--code-bg); padding: 10px 14px; border-radius: 6px; color: #e2e8f0; margin: 8px 0; word-break: break-all; }
+  .response-example { font-family: 'Fira Code', monospace; font-size: 12px; background: var(--code-bg); padding: 10px 14px; border-radius: 6px; color: #e2e8f0; margin: 8px 0; word-break: break-all; }
   .response-card p { font-size: 13px; color: var(--muted); margin: 0; }
 
   .api-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0; }
@@ -174,7 +175,7 @@
   .callout-icon { flex-shrink: 0; font-size: 16px; }
   .callout.warning { background: rgba(251,191,36,.07); border-color: rgba(251,191,36,.2); color: #fcd34d; }
 
-  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--surface2); padding: 2px 6px; border-radius: 4px; color: var(--accent2); }
+  code { font-family: 'Fira Code', monospace; font-size: 12px; background: var(--surface2); padding: 2px 6px; border-radius: 4px; color: var(--accent2); }
 
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
@@ -1038,17 +1039,17 @@
     <table class="params-table">
       <thead><tr><th>Constant</th><th>Value</th></tr></thead>
       <tbody>
-        <tr><td><span class="param-name">SMS Endpoint</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">https://sms.vrittechnologies.com/smsapi/index.php</td></tr>
-        <tr><td><span class="param-name">Balance Endpoint</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">https://sms.vrittechnologies.com/miscapi/{key}/getBalance/true/</td></tr>
-        <tr><td><span class="param-name">DLR Endpoint</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">https://sms.vrittechnologies.com/miscapi/{key}/getDLR/{shoot_id}</td></tr>
-        <tr><td><span class="param-name">Fetch Key Endpoint</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">https://sms.vrittechnologies.com/getkey/{username}/{password}</td></tr>
-        <tr><td><span class="param-name">Last Transaction</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">https://sms.vrittechnologies.com/lasttran/index.php?key={key}</td></tr>
-        <tr><td><span class="param-name">API Key</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent)" class="key-placeholder">YOUR_API_KEY</td></tr>
-        <tr><td><span class="param-name">Username</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">vrittechnologies</td></tr>
-        <tr><td><span class="param-name">Default Campaign ID</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">7017</td></tr>
-        <tr><td><span class="param-name">Default Route ID</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">210 (VritTech-SMSBIT)</td></tr>
-        <tr><td><span class="param-name">Schedule Time Format</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">YYYY-MM-DD H:I</td></tr>
-        <tr><td><span class="param-name">Max Message Length</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">720 chars (text/flash) · 70 chars/segment (unicode)</td></tr>
+        <tr><td><span class="param-name">SMS Endpoint</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">https://sms.vrittechnologies.com/smsapi/index.php</td></tr>
+        <tr><td><span class="param-name">Balance Endpoint</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">https://sms.vrittechnologies.com/miscapi/{key}/getBalance/true/</td></tr>
+        <tr><td><span class="param-name">DLR Endpoint</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">https://sms.vrittechnologies.com/miscapi/{key}/getDLR/{shoot_id}</td></tr>
+        <tr><td><span class="param-name">Fetch Key Endpoint</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">https://sms.vrittechnologies.com/getkey/{username}/{password}</td></tr>
+        <tr><td><span class="param-name">Last Transaction</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">https://sms.vrittechnologies.com/lasttran/index.php?key={key}</td></tr>
+        <tr><td><span class="param-name">API Key</span></td><td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--accent)" class="key-placeholder">YOUR_API_KEY</td></tr>
+        <tr><td><span class="param-name">Username</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">vrittechnologies</td></tr>
+        <tr><td><span class="param-name">Default Campaign ID</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">7017</td></tr>
+        <tr><td><span class="param-name">Default Route ID</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">210 (VritTech-SMSBIT)</td></tr>
+        <tr><td><span class="param-name">Schedule Time Format</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">YYYY-MM-DD H:I</td></tr>
+        <tr><td><span class="param-name">Max Message Length</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">720 chars (text/flash) · 70 chars/segment (unicode)</td></tr>
       </tbody>
     </table>
   </div>
