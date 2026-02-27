@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vrit SMS API Documentation</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #111318;
+    --surface2: #181c24;
+    --border: #1e2330;
+    --accent: #00e5a0;
+    --accent2: #0077ff;
+    --accent3: #ff4d6d;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --code-bg: #0d1017;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.7; }
+
+  .layout { display: flex; min-height: 100vh; }
+
+  nav {
+    width: 260px; min-width: 260px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 32px 0;
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  }
+  .nav-logo { padding: 0 24px 32px; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+  .nav-logo .brand { font-size: 13px; font-weight: 600; color: var(--accent); letter-spacing: .15em; text-transform: uppercase; }
+  .nav-logo h2 { font-size: 18px; font-weight: 800; color: var(--text); margin-top: 4px; }
+  .nav-section { padding: 8px 24px; font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: 16px; }
+  nav a { display: block; padding: 8px 24px; font-size: 14px; color: #94a3b8; text-decoration: none; transition: all .15s; border-left: 2px solid transparent; }
+  nav a:hover, nav a.active { color: var(--accent); border-left-color: var(--accent); background: rgba(0,229,160,.05); }
+
+  main { flex: 1; padding: 60px 64px; max-width: 960px; }
+
+  /* API KEY BANNER */
+  .apikey-banner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .apikey-banner .key-icon { font-size: 28px; flex-shrink: 0; }
+  .apikey-banner label { font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; display: block; margin-bottom: 8px; }
+  .key-input-row { display: flex; gap: 10px; align-items: center; flex: 1; }
+  .key-input-row input {
+    flex: 1;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .key-input-row input:focus { border-color: var(--accent); }
+  .apply-btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity .15s;
+  }
+  .apply-btn:hover { opacity: .85; }
+  .gen-btn {
+    background: none;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .15s;
+  }
+  .gen-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+  .key-status { font-size: 12px; margin-top: 8px; display: none; }
+  .key-status.show { display: block; }
+  .key-status.applied { color: var(--accent); }
+  .key-status.example { color: var(--accent2); }
+
+  /* HERO */
+  .hero { margin-bottom: 64px; padding-bottom: 48px; border-bottom: 1px solid var(--border); }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,229,160,.1); border: 1px solid rgba(0,229,160,.2); color: var(--accent); padding: 4px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 20px; }
+  .hero h1 { font-size: 52px; font-weight: 800; line-height: 1.1; margin-bottom: 20px; background: linear-gradient(135deg, #fff 0%, #64748b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero p { font-size: 18px; color: #94a3b8; max-width: 520px; }
+  .hero-meta { display: flex; gap: 32px; margin-top: 32px; flex-wrap: wrap; }
+  .meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .meta-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+  .meta-value { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent); }
+
+  /* SECTIONS */
+  .section { margin-bottom: 72px; scroll-margin-top: 32px; }
+  .section-tag { font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .section h2 { font-size: 32px; font-weight: 800; margin-bottom: 16px; color: #fff; }
+  .section h3 { font-size: 20px; font-weight: 700; margin: 32px 0 12px; color: var(--text); }
+  .section p { color: #94a3b8; margin-bottom: 16px; font-size: 15px; }
+
+  .endpoint { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin: 12px 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .method { padding: 4px 12px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: .05em; white-space: nowrap; }
+  .method.get { background: rgba(0,119,255,.15); color: var(--accent2); border: 1px solid rgba(0,119,255,.3); }
+  .method.post { background: rgba(0,229,160,.15); color: var(--accent); border: 1px solid rgba(0,229,160,.3); }
+  .endpoint-url { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #e2e8f0; word-break: break-all; }
+  .endpoint-url .dyn { color: var(--accent); }
+
+  .params-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+  .params-table th { text-align: left; padding: 10px 16px; background: var(--surface2); color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; border-bottom: 1px solid var(--border); }
+  .params-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: #94a3b8; vertical-align: top; }
+  .params-table tr:last-child td { border-bottom: none; }
+  .params-table tr:hover td { background: rgba(255,255,255,.02); }
+  .param-name { font-family: 'JetBrains Mono', monospace; color: var(--accent2); font-size: 13px; }
+  .param-required { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; background: rgba(255,77,109,.15); color: var(--accent3); border: 1px solid rgba(255,77,109,.2); }
+  .param-optional { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; background: rgba(100,116,139,.15); color: var(--muted); border: 1px solid var(--border); }
+  .param-default { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #475569; margin-top: 4px; }
+
+  .code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 16px 0; }
+  .code-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: var(--surface2); border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
+  .code-lang { font-size: 12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+  .copy-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 4px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all .15s; font-family: 'Syne', sans-serif; }
+  .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .copy-btn.copied { border-color: var(--accent); color: var(--accent); }
+  pre { padding: 24px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.8; color: #e2e8f0; }
+
+  .kw { color: #7c6af7; } .str { color: #86efac; } .var { color: #60a5fa; }
+  .fn { color: #fbbf24; } .cm { color: #475569; font-style: italic; } .num { color: #f472b6; }
+  .dyn-key { color: #00e5a0; font-weight: 600; }
+  .dyn-key[data-placeholder="true"],
+  pre .dyn-key { color: #00e5a0; }
+
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .tab-btn { padding: 8px 16px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); font-size: 13px; font-family: 'Syne', sans-serif; font-weight: 600; cursor: pointer; transition: all .15s; margin-bottom: -1px; }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .response-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .response-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+  .response-card.success { border-color: rgba(0,229,160,.2); }
+  .response-card.error { border-color: rgba(255,77,109,.2); }
+  .response-type { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+  .response-card.success .response-type { color: var(--accent); }
+  .response-card.error .response-type { color: var(--accent3); }
+  .response-example { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--code-bg); padding: 10px 14px; border-radius: 6px; color: #e2e8f0; margin: 8px 0; word-break: break-all; }
+  .response-card p { font-size: 13px; color: var(--muted); margin: 0; }
+
+  .api-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0; }
+  .api-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; transition: border-color .2s; cursor: pointer; text-decoration: none; display: block; }
+  .api-card:hover { border-color: rgba(0,229,160,.3); }
+  .api-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(0,229,160,.1); display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 12px; }
+  .api-card h4 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .api-card p { font-size: 12px; color: var(--muted); margin: 0; }
+
+  .callout { background: rgba(0,119,255,.08); border: 1px solid rgba(0,119,255,.2); border-radius: 10px; padding: 14px 18px; font-size: 14px; color: #93c5fd; margin: 16px 0; display: flex; gap: 10px; }
+  .callout-icon { flex-shrink: 0; font-size: 16px; }
+  .callout.warning { background: rgba(251,191,36,.07); border-color: rgba(251,191,36,.2); color: #fcd34d; }
+
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--surface2); padding: 2px 6px; border-radius: 4px; color: var(--accent2); }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 900px) {
+    nav { display: none; }
+    main { padding: 32px 20px; }
+    .hero h1 { font-size: 36px; }
+    .response-grid { grid-template-columns: 1fr; }
+    .api-grid { grid-template-columns: 1fr 1fr; }
+    .apikey-banner { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="nav-logo">
+    <div class="brand">Vrit Technologies</div>
+    <h2>SMS API Docs</h2>
+  </div>
+  <div class="nav-section">Overview</div>
+  <a href="#introduction">Introduction</a>
+  <a href="#authentication">Authentication</a>
+  <a href="#api-types">API Types</a>
+  <div class="nav-section">Send SMS</div>
+  <a href="#text-sms">Text SMS</a>
+  <a href="#flash-sms">Flash SMS</a>
+  <a href="#wap-push">WAP-Push</a>
+  <a href="#vcard">vCard</a>
+  <a href="#unicode">Unicode SMS</a>
+  <div class="nav-section">Account</div>
+  <a href="#credit-balance">Credit Balance</a>
+  <a href="#dlr">DLR</a>
+  <a href="#fetch-api-key">Fetch API Key</a>
+  <a href="#last-transaction">Last Transaction</a>
+  <div class="nav-section">Reference</div>
+  <a href="#responses">API Responses</a>
+  <a href="#quick-ref">Quick Reference</a>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+  <!-- API KEY BANNER -->
+  <div class="apikey-banner">
+    <div class="key-icon">🔑</div>
+    <div style="flex:1">
+      <label>Your API Key — updates all code examples instantly</label>
+      <div class="key-input-row">
+        <input type="text" id="apiKeyInput" placeholder="Paste your API key here…" spellcheck="false" autocomplete="off">
+        <button class="apply-btn" onclick="applyKey()">Apply</button>
+        <button class="gen-btn" onclick="generateExampleKey()">Generate Example Key</button>
+      </div>
+      <div class="key-status" id="keyStatus"></div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero" id="introduction">
+    <div class="hero-badge">📡 REST API v1</div>
+    <h1>SMS API Reference</h1>
+    <p>Send SMS messages programmatically via HTTP GET or POST. Built for speed, reliability, and developer ergonomics.</p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">SMS Endpoint</span>
+        <span class="meta-value">sms.vrittechnologies.com</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Misc Endpoint</span>
+        <span class="meta-value">sms.vrittechnologies.com/miscapi</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Default Route ID</span>
+        <span class="meta-value">210 (VritTech-SMSBIT)</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Default Campaign</span>
+        <span class="meta-value">7017</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTHENTICATION -->
+  <div class="section" id="authentication">
+    <div class="section-tag">Setup</div>
+    <h2>Authentication</h2>
+    <p>The API supports two authentication methods. Using an API key is strongly recommended.</p>
+    <div class="response-grid">
+      <div class="response-card success">
+        <div class="response-type">✓ Recommended — API Key</div>
+        <div class="response-example">key=<span class="dyn-key key-placeholder">YOUR_API_KEY</span></div>
+        <p>Pass your API key via the <code>key</code> parameter. More secure and easier to rotate than credentials.</p>
+      </div>
+      <div class="response-card">
+        <div class="response-type">Alternative — Username &amp; Password</div>
+        <div class="response-example">username=vrittechnologies&amp;password=XXXX</div>
+        <p>Avoid special characters (&amp;, #, /) in your password as they break query strings.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- API TYPES -->
+  <div class="section" id="api-types">
+    <div class="section-tag">Capabilities</div>
+    <h2>API Types</h2>
+    <p>All send endpoints share the same base URL and accept both GET and POST. Account endpoints use a separate URL pattern.</p>
+    <div class="api-grid">
+      <a class="api-card" href="#text-sms"><div class="api-icon">💬</div><h4>Text SMS</h4><p>Standard SMS, up to 720 chars</p></a>
+      <a class="api-card" href="#flash-sms"><div class="api-icon">⚡</div><h4>Flash SMS</h4><p>Pop-up on recipient's screen</p></a>
+      <a class="api-card" href="#wap-push"><div class="api-icon">🔗</div><h4>WAP-Push</h4><p>Send clickable URL links</p></a>
+      <a class="api-card" href="#vcard"><div class="api-icon">👤</div><h4>vCard</h4><p>Send contact card information</p></a>
+      <a class="api-card" href="#unicode"><div class="api-icon">🌐</div><h4>Unicode SMS</h4><p>Multi-language &amp; emoji support</p></a>
+      <a class="api-card" href="#credit-balance"><div class="api-icon">💳</div><h4>Credit Balance</h4><p>Check remaining credits</p></a>
+      <a class="api-card" href="#dlr"><div class="api-icon">📊</div><h4>DLR</h4><p>Delivery reports by shoot ID</p></a>
+      <a class="api-card" href="#fetch-api-key"><div class="api-icon">🗝️</div><h4>Fetch API Key</h4><p>Retrieve key via credentials</p></a>
+      <a class="api-card" href="#last-transaction"><div class="api-icon">📋</div><h4>Last Transaction</h4><p>Most recent SMS shoot details</p></a>
+    </div>
+  </div>
+
+  <!-- ===================== TEXT SMS ===================== -->
+  <div class="section" id="text-sms">
+    <div class="section-tag">Send SMS</div>
+    <h2>Text SMS API</h2>
+    <p>Send plain text SMS to one or multiple recipients. Supports immediate and scheduled delivery.</p>
+    <div class="endpoint"><span class="method get">GET</span><span class="endpoint-url">https://sms.vrittechnologies.com/smsapi/index.php</span></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="endpoint-url">https://sms.vrittechnologies.com/smsapi/index.php</span></div>
+
+    <h3>Parameters</h3>
+    <table class="params-table">
+      <thead><tr><th>Parameter</th><th>Type</th><th>Status</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="param-name">key</span></td><td>string</td><td><span class="param-required">required*</span></td><td>Your API key<div class="param-default key-placeholder">YOUR_API_KEY</div></td></tr>
+        <tr><td><span class="param-name">username</span></td><td>string</td><td><span class="param-optional">alt auth</span></td><td>Login username (instead of key)</td></tr>
+        <tr><td><span class="param-name">password</span></td><td>string</td><td><span class="param-optional">alt auth</span></td><td>Login password. Avoid &amp;, #, / characters</td></tr>
+        <tr><td><span class="param-name">campaign</span></td><td>integer</td><td><span class="param-required">required</span></td><td>Campaign ID<div class="param-default">Default: 7017</div></td></tr>
+        <tr><td><span class="param-name">routeid</span></td><td>integer</td><td><span class="param-required">required</span></td><td>Route ID<div class="param-default">Default: 210 (VritTech-SMSBIT)</div></td></tr>
+        <tr><td><span class="param-name">type</span></td><td>string</td><td><span class="param-required">required</span></td><td>Must be <code>text</code></td></tr>
+        <tr><td><span class="param-name">contacts</span></td><td>string</td><td><span class="param-required">required</span></td><td>Comma-separated 10-digit numbers<div class="param-default">e.g. 9841XXXXXX,9801XXXXXX</div></td></tr>
+        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID</td></tr>
+        <tr><td><span class="param-name">msg</span></td><td>string</td><td><span class="param-required">required</span></td><td>URL-encoded SMS text. Max 720 characters</td></tr>
+        <tr><td><span class="param-name">responsetype</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>Response format: <code>http</code>, <code>json</code>, or <code>xml</code></td></tr>
+        <tr><td><span class="param-name">time</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>Schedule: <code>YYYY-MM-DD H:I</code>. Leave blank to send immediately</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Code Examples</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab(this,'ts-get-key')">GET / API Key</button>
+          <button class="tab-btn" onclick="switchTab(this,'ts-get-pass')">GET / Password</button>
+          <button class="tab-btn" onclick="switchTab(this,'ts-post-key')">POST / API Key</button>
+          <button class="tab-btn" onclick="switchTab(this,'ts-post-pass')">POST / Password</button>
+          <button class="tab-btn" onclick="switchTab(this,'ts-sched')">Scheduled</button>
+        </div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div id="ts-get-key" class="tab-content active"><pre><span class="cm">// HTTP GET — API Key (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
+<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Hello People, have a great day'</span>);
+
+<span class="var">$api_url</span> = <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>
+         . <span class="str">"?key={$api_key}&amp;campaign=7017&amp;routeid=210"</span>
+         . <span class="str">"&amp;type=text&amp;contacts={$contacts}&amp;senderid={$from}&amp;msg={$msg}"</span>;
+
+<span class="var">$response</span> = <span class="fn">file_get_contents</span>(<span class="var">$api_url</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+      <div id="ts-get-pass" class="tab-content"><pre><span class="cm">// HTTP GET — Username &amp; Password (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$username</span> = <span class="str">'vrittechnologies'</span>;
+<span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
+<span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
+<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Hello People, have a great day'</span>);
+
+<span class="var">$api_url</span> = <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>
+         . <span class="str">"?username={$username}&amp;password={$password}"</span>
+         . <span class="str">"&amp;campaign=7017&amp;routeid=210&amp;type=text"</span>
+         . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}&amp;msg={$msg}"</span>;
+
+<span class="var">$response</span> = <span class="fn">file_get_contents</span>(<span class="var">$api_url</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+      <div id="ts-post-key" class="tab-content"><pre><span class="cm">// HTTP POST — API Key (PHP + cURL)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
+<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Hello People, have a great day'</span>);
+
+<span class="var">$ch</span> = <span class="fn">curl_init</span>();
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_URL, <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="num">1</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_POST, <span class="num">1</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_POSTFIELDS,
+    <span class="str">"key={$api_key}&amp;campaign=7017&amp;routeid=210&amp;type=text"</span>
+  . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}&amp;msg={$msg}"</span>);
+
+<span class="var">$response</span> = <span class="fn">curl_exec</span>(<span class="var">$ch</span>);
+<span class="fn">curl_close</span>(<span class="var">$ch</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+      <div id="ts-post-pass" class="tab-content"><pre><span class="cm">// HTTP POST — Username &amp; Password (PHP + cURL)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$username</span> = <span class="str">'vrittechnologies'</span>;
+<span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
+<span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
+<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Hello People, have a great day'</span>);
+
+<span class="var">$ch</span> = <span class="fn">curl_init</span>();
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_URL, <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="num">1</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_POST, <span class="num">1</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_POSTFIELDS,
+    <span class="str">"username={$username}&amp;password={$password}"</span>
+  . <span class="str">"&amp;campaign=7017&amp;routeid=210&amp;type=text"</span>
+  . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}&amp;msg={$msg}"</span>);
+
+<span class="var">$response</span> = <span class="fn">curl_exec</span>(<span class="var">$ch</span>);
+<span class="fn">curl_close</span>(<span class="var">$ch</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+      <div id="ts-sched" class="tab-content"><pre><span class="cm">// Scheduled SMS (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$contacts</span> = <span class="str">'98412XXXXX'</span>;
+<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Your scheduled message here'</span>);
+<span class="var">$time</span>     = <span class="fn">urlencode</span>(<span class="str">'2026-03-01 09:30'</span>); <span class="cm">// YYYY-MM-DD H:I</span>
+
+<span class="var">$api_url</span> = <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>
+         . <span class="str">"?key={$api_key}&amp;campaign=7017&amp;routeid=210&amp;type=text"</span>
+         . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}&amp;msg={$msg}&amp;time={$time}"</span>;
+
+<span class="var">$response</span> = <span class="fn">file_get_contents</span>(<span class="var">$api_url</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+    </div>
+  </div>
+
+  <!-- ===================== FLASH SMS ===================== -->
+  <div class="section" id="flash-sms">
+    <div class="section-tag">Send SMS</div>
+    <h2>Flash SMS API</h2>
+    <p>Flash SMS messages pop up directly on the recipient's screen without being saved to inbox. Same endpoint as Text SMS — change <code>type</code> to <code>flash</code>. Note: Flash SMS does not use a campaign parameter.</p>
+    <div class="endpoint"><span class="method get">GET</span><span class="endpoint-url">https://sms.vrittechnologies.com/smsapi/index.php</span></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="endpoint-url">https://sms.vrittechnologies.com/smsapi/index.php</span></div>
+
+    <h3>Parameters</h3>
+    <table class="params-table">
+      <thead><tr><th>Parameter</th><th>Type</th><th>Status</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="param-name">key</span></td><td>string</td><td><span class="param-required">required</span></td><td>Your API key<div class="param-default key-placeholder">YOUR_API_KEY</div></td></tr>
+        <tr><td><span class="param-name">routeid</span></td><td>integer</td><td><span class="param-required">required</span></td><td>Route ID<div class="param-default">Default: 210</div></td></tr>
+        <tr><td><span class="param-name">type</span></td><td>string</td><td><span class="param-required">required</span></td><td>Must be <code>flash</code></td></tr>
+        <tr><td><span class="param-name">contacts</span></td><td>string</td><td><span class="param-required">required</span></td><td>Comma-separated 10-digit numbers</td></tr>
+        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID</td></tr>
+        <tr><td><span class="param-name">msg</span></td><td>string</td><td><span class="param-required">required</span></td><td>URL-encoded SMS text. Max 720 characters</td></tr>
+        <tr><td><span class="param-name">time</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>Schedule: <code>YYYY-MM-DD H:I</code>. Leave blank to send immediately</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Code Examples</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab(this,'fl-get')">GET / PHP</button>
+          <button class="tab-btn" onclick="switchTab(this,'fl-post')">POST / PHP</button>
+          <button class="tab-btn" onclick="switchTab(this,'fl-sched')">Scheduled</button>
+        </div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div id="fl-get" class="tab-content active"><pre><span class="cm">// Flash SMS — HTTP GET (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
+<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Hello People, have a great day'</span>);
+
+<span class="var">$api_url</span> = <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>
+         . <span class="str">"?key={$api_key}&amp;routeid=210&amp;type=flash"</span>
+         . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}&amp;msg={$msg}"</span>;
+
+<span class="var">$response</span> = <span class="fn">file_get_contents</span>(<span class="var">$api_url</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+      <div id="fl-post" class="tab-content"><pre><span class="cm">// Flash SMS — HTTP POST / cURL (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
+<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Hello People, have a great day'</span>);
+
+<span class="var">$ch</span> = <span class="fn">curl_init</span>();
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_URL, <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="num">1</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_POST, <span class="num">1</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_POSTFIELDS,
+    <span class="str">"key={$api_key}&amp;routeid=210&amp;type=flash"</span>
+  . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}&amp;msg={$msg}"</span>);
+
+<span class="var">$response</span> = <span class="fn">curl_exec</span>(<span class="var">$ch</span>);
+<span class="fn">curl_close</span>(<span class="var">$ch</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+      <div id="fl-sched" class="tab-content"><pre><span class="cm">// Scheduled Flash SMS (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
+<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Flash message scheduled'</span>);
+<span class="var">$time</span>     = <span class="fn">urlencode</span>(<span class="str">'2026-03-01 09:30'</span>);
+
+<span class="var">$api_url</span> = <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>
+         . <span class="str">"?key={$api_key}&amp;campaign=7017&amp;routeid=210&amp;type=flash"</span>
+         . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}&amp;msg={$msg}&amp;time={$time}"</span>;
+
+<span class="var">$response</span> = <span class="fn">file_get_contents</span>(<span class="var">$api_url</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+    </div>
+  </div>
+
+  <!-- ===================== WAP PUSH ===================== -->
+  <div class="section" id="wap-push">
+    <div class="section-tag">Send SMS</div>
+    <h2>WAP-Push API</h2>
+    <p>Send a clickable link via SMS. The recipient sees a title and taps to open the URL on their device.</p>
+    <div class="endpoint"><span class="method get">GET</span><span class="endpoint-url">https://sms.vrittechnologies.com/smsapi/index.php</span></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="endpoint-url">https://sms.vrittechnologies.com/smsapi/index.php</span></div>
+
+    <h3>Parameters</h3>
+    <table class="params-table">
+      <thead><tr><th>Parameter</th><th>Type</th><th>Status</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="param-name">key</span></td><td>string</td><td><span class="param-required">required</span></td><td>Your API key<div class="param-default key-placeholder">YOUR_API_KEY</div></td></tr>
+        <tr><td><span class="param-name">routeid</span></td><td>integer</td><td><span class="param-required">required</span></td><td>Route ID<div class="param-default">Default: 210</div></td></tr>
+        <tr><td><span class="param-name">type</span></td><td>string</td><td><span class="param-required">required</span></td><td>Must be <code>wap</code></td></tr>
+        <tr><td><span class="param-name">contacts</span></td><td>string</td><td><span class="param-required">required</span></td><td>Comma-separated 10-digit numbers</td></tr>
+        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID</td></tr>
+        <tr><td><span class="param-name">wap_title</span></td><td>string</td><td><span class="param-required">required</span></td><td>URL-encoded title. Max 60 characters</td></tr>
+        <tr><td><span class="param-name">wap_url</span></td><td>string</td><td><span class="param-required">required</span></td><td>URL-encoded link (include protocol: http/wap). Max 100 characters</td></tr>
+        <tr><td><span class="param-name">time</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>Schedule: <code>YYYY-MM-DD H:I</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Code Examples</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab(this,'wap-get')">GET / PHP</button>
+          <button class="tab-btn" onclick="switchTab(this,'wap-post')">POST / PHP</button>
+        </div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div id="wap-get" class="tab-content active"><pre><span class="cm">// WAP-Push — HTTP GET (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span>   = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$contacts</span>  = <span class="str">'98412XXXXX,98012XXXXX'</span>;
+<span class="var">$from</span>      = <span class="str">'SENDER_ID'</span>;
+<span class="var">$wap_title</span> = <span class="fn">urlencode</span>(<span class="str">'Download Free Wallpapers'</span>);
+<span class="var">$wap_url</span>   = <span class="fn">urlencode</span>(<span class="str">'http://www.mysite.net/wallpapers/'</span>);
+
+<span class="var">$api_url</span> = <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>
+         . <span class="str">"?key={$api_key}&amp;routeid=210&amp;type=wap"</span>
+         . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}"</span>
+         . <span class="str">"&amp;wap_title={$wap_title}&amp;wap_url={$wap_url}"</span>;
+
+<span class="var">$response</span> = <span class="fn">file_get_contents</span>(<span class="var">$api_url</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+      <div id="wap-post" class="tab-content"><pre><span class="cm">// WAP-Push — HTTP POST / cURL (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span>   = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$contacts</span>  = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
+<span class="var">$from</span>      = <span class="str">'SENDER_ID'</span>;
+<span class="var">$wap_title</span> = <span class="fn">urlencode</span>(<span class="str">'Download Free Wallpapers'</span>);
+<span class="var">$wap_url</span>   = <span class="fn">urlencode</span>(<span class="str">'http://www.mysite.net/wallpapers/'</span>);
+
+<span class="var">$ch</span> = <span class="fn">curl_init</span>();
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_URL, <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="num">1</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_POST, <span class="num">1</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_POSTFIELDS,
+    <span class="str">"key={$api_key}&amp;routeid=210&amp;type=wap"</span>
+  . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}"</span>
+  . <span class="str">"&amp;wap_title={$wap_title}&amp;wap_url={$wap_url}"</span>);
+
+<span class="var">$response</span> = <span class="fn">curl_exec</span>(<span class="var">$ch</span>);
+<span class="fn">curl_close</span>(<span class="var">$ch</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+    </div>
+  </div>
+
+  <!-- ===================== VCARD ===================== -->
+  <div class="section" id="vcard">
+    <div class="section-tag">Send SMS</div>
+    <h2>vCard API</h2>
+    <p>Send a contact card that recipients can save directly to their phone's address book.</p>
+    <div class="endpoint"><span class="method get">GET</span><span class="endpoint-url">https://sms.vrittechnologies.com/smsapi/index.php</span></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="endpoint-url">https://sms.vrittechnologies.com/smsapi/index.php</span></div>
+
+    <h3>Parameters</h3>
+    <table class="params-table">
+      <thead><tr><th>Parameter</th><th>Type</th><th>Status</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="param-name">key</span></td><td>string</td><td><span class="param-required">required</span></td><td>Your API key<div class="param-default key-placeholder">YOUR_API_KEY</div></td></tr>
+        <tr><td><span class="param-name">routeid</span></td><td>integer</td><td><span class="param-required">required</span></td><td>Route ID<div class="param-default">Default: 210</div></td></tr>
+        <tr><td><span class="param-name">type</span></td><td>string</td><td><span class="param-required">required</span></td><td>Must be <code>vcard</code></td></tr>
+        <tr><td><span class="param-name">contacts</span></td><td>string</td><td><span class="param-required">required</span></td><td>Comma-separated 10-digit numbers</td></tr>
+        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID</td></tr>
+        <tr><td><span class="param-name">first_name</span></td><td>string</td><td><span class="param-required">required</span></td><td>First name of the contact</td></tr>
+        <tr><td><span class="param-name">last_name</span></td><td>string</td><td><span class="param-required">required</span></td><td>Last name of the contact</td></tr>
+        <tr><td><span class="param-name">company</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>URL-encoded company name</td></tr>
+        <tr><td><span class="param-name">job_title</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>URL-encoded job title</td></tr>
+        <tr><td><span class="param-name">telephone</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>Phone number with country code, no leading zeros or + sign</td></tr>
+        <tr><td><span class="param-name">email</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>URL-encoded email address</td></tr>
+        <tr><td><span class="param-name">time</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>Schedule: <code>YYYY-MM-DD H:I</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Code Examples</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab(this,'vc-get')">GET / PHP</button>
+          <button class="tab-btn" onclick="switchTab(this,'vc-post')">POST / PHP</button>
+        </div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div id="vc-get" class="tab-content active"><pre><span class="cm">// vCard — HTTP GET (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span>    = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$contacts</span>   = <span class="str">'98412XXXXX,98012XXXXX'</span>;
+<span class="var">$from</span>       = <span class="str">'SENDER_ID'</span>;
+<span class="var">$first_name</span> = <span class="str">'Sam'</span>;
+<span class="var">$last_name</span>  = <span class="str">'Walker'</span>;
+<span class="var">$company</span>    = <span class="fn">urlencode</span>(<span class="str">'XYZ Pvt Ltd, CA'</span>);
+<span class="var">$job_title</span>  = <span class="fn">urlencode</span>(<span class="str">'Senior Sales Executive'</span>);
+<span class="var">$telephone</span>  = <span class="fn">urlencode</span>(<span class="str">'1-443-456-1675'</span>);
+<span class="var">$email</span>      = <span class="fn">urlencode</span>(<span class="str">'sam.walker@xyz.com'</span>);
+
+<span class="var">$api_url</span> = <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>
+         . <span class="str">"?key={$api_key}&amp;campaign=7017&amp;routeid=210&amp;type=vcard"</span>
+         . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}"</span>
+         . <span class="str">"&amp;first_name={$first_name}&amp;last_name={$last_name}"</span>
+         . <span class="str">"&amp;company={$company}&amp;job_title={$job_title}"</span>
+         . <span class="str">"&amp;telephone={$telephone}&amp;email={$email}"</span>;
+
+<span class="var">$response</span> = <span class="fn">file_get_contents</span>(<span class="var">$api_url</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+      <div id="vc-post" class="tab-content"><pre><span class="cm">// vCard — HTTP POST / cURL (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span>    = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$contacts</span>   = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
+<span class="var">$from</span>       = <span class="str">'SENDER_ID'</span>;
+<span class="var">$first_name</span> = <span class="str">'Sam'</span>;
+<span class="var">$last_name</span>  = <span class="str">'Walker'</span>;
+<span class="var">$company</span>    = <span class="fn">urlencode</span>(<span class="str">'XYZ Pvt Ltd, CA'</span>);
+<span class="var">$job_title</span>  = <span class="fn">urlencode</span>(<span class="str">'Senior Sales Executive'</span>);
+<span class="var">$telephone</span>  = <span class="fn">urlencode</span>(<span class="str">'1-443-456-1675'</span>);
+<span class="var">$email</span>      = <span class="fn">urlencode</span>(<span class="str">'sam.walker@xyz.com'</span>);
+
+<span class="var">$ch</span> = <span class="fn">curl_init</span>();
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_URL, <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="num">1</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_POST, <span class="num">1</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_POSTFIELDS,
+    <span class="str">"key={$api_key}&amp;campaign=7017&amp;routeid=210&amp;type=vcard"</span>
+  . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}"</span>
+  . <span class="str">"&amp;first_name={$first_name}&amp;last_name={$last_name}"</span>
+  . <span class="str">"&amp;company={$company}&amp;job_title={$job_title}"</span>
+  . <span class="str">"&amp;telephone={$telephone}&amp;email={$email}"</span>);
+
+<span class="var">$response</span> = <span class="fn">curl_exec</span>(<span class="var">$ch</span>);
+<span class="fn">curl_close</span>(<span class="var">$ch</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+    </div>
+  </div>
+
+  <!-- ===================== UNICODE ===================== -->
+  <div class="section" id="unicode">
+    <div class="section-tag">Send SMS</div>
+    <h2>Unicode SMS API</h2>
+    <p>Send SMS in Nepali, Hindi, Arabic, Chinese, Russian, or any Unicode script. The message text must be <strong>UTF-8 encoded</strong> before URL encoding.</p>
+    <div class="endpoint"><span class="method get">GET</span><span class="endpoint-url">https://sms.vrittechnologies.com/smsapi/index.php</span></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="endpoint-url">https://sms.vrittechnologies.com/smsapi/index.php</span></div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <span>Unicode SMS uses shorter segments (70 chars/segment vs 160 for ASCII). Always apply <code>utf8_encode()</code> before <code>urlencode()</code> on the message text.</span>
+    </div>
+
+    <h3>Parameters</h3>
+    <table class="params-table">
+      <thead><tr><th>Parameter</th><th>Type</th><th>Status</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="param-name">key</span></td><td>string</td><td><span class="param-required">required*</span></td><td>Your API key<div class="param-default key-placeholder">YOUR_API_KEY</div></td></tr>
+        <tr><td><span class="param-name">username</span></td><td>string</td><td><span class="param-optional">alt auth</span></td><td>Login username (instead of key)</td></tr>
+        <tr><td><span class="param-name">password</span></td><td>string</td><td><span class="param-optional">alt auth</span></td><td>Login password</td></tr>
+        <tr><td><span class="param-name">campaign</span></td><td>integer</td><td><span class="param-required">required</span></td><td>Campaign ID<div class="param-default">Default: 7017</div></td></tr>
+        <tr><td><span class="param-name">routeid</span></td><td>integer</td><td><span class="param-required">required</span></td><td>Route ID<div class="param-default">Default: 210</div></td></tr>
+        <tr><td><span class="param-name">type</span></td><td>string</td><td><span class="param-required">required</span></td><td>Must be <code>unicode</code></td></tr>
+        <tr><td><span class="param-name">contacts</span></td><td>string</td><td><span class="param-required">required</span></td><td>Comma-separated 10-digit numbers</td></tr>
+        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID</td></tr>
+        <tr><td><span class="param-name">msg</span></td><td>string</td><td><span class="param-required">required</span></td><td>UTF-8 then URL-encoded text. Max 720 characters</td></tr>
+        <tr><td><span class="param-name">time</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>Schedule: <code>YYYY-MM-DD H:I</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Code Examples</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab(this,'un-get-key')">GET / API Key</button>
+          <button class="tab-btn" onclick="switchTab(this,'un-get-pass')">GET / Password</button>
+          <button class="tab-btn" onclick="switchTab(this,'un-post-key')">POST / API Key</button>
+          <button class="tab-btn" onclick="switchTab(this,'un-post-pass')">POST / Password</button>
+        </div>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <div id="un-get-key" class="tab-content active"><pre><span class="cm">// Unicode SMS — HTTP GET / API Key (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
+<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$sms_text</span> = <span class="str">'नमस्ते, Hello in Nepali'</span>;  <span class="cm">// UTF-8 string</span>
+<span class="var">$message</span>  = <span class="fn">urlencode</span>(<span class="fn">utf8_encode</span>(<span class="var">$sms_text</span>));
+
+<span class="var">$api_url</span> = <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>
+         . <span class="str">"?key={$api_key}&amp;campaign=7017&amp;routeid=210&amp;type=unicode"</span>
+         . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}&amp;msg={$message}"</span>;
+
+<span class="var">$response</span> = <span class="fn">file_get_contents</span>(<span class="var">$api_url</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+      <div id="un-get-pass" class="tab-content"><pre><span class="cm">// Unicode SMS — HTTP GET / Username &amp; Password (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$username</span> = <span class="str">'vrittechnologies'</span>;
+<span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
+<span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
+<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$sms_text</span> = <span class="str">'नमस्ते, Hello in Nepali'</span>;
+<span class="var">$message</span>  = <span class="fn">urlencode</span>(<span class="fn">utf8_encode</span>(<span class="var">$sms_text</span>));
+
+<span class="var">$api_url</span> = <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>
+         . <span class="str">"?username={$username}&amp;password={$password}"</span>
+         . <span class="str">"&amp;campaign=7017&amp;routeid=210&amp;type=unicode"</span>
+         . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}&amp;msg={$message}"</span>;
+
+<span class="var">$response</span> = <span class="fn">file_get_contents</span>(<span class="var">$api_url</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+      <div id="un-post-key" class="tab-content"><pre><span class="cm">// Unicode SMS — HTTP POST / API Key (PHP + cURL)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
+<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$sms_text</span> = <span class="str">'नमस्ते, Hello in Nepali'</span>;
+<span class="var">$message</span>  = <span class="fn">urlencode</span>(<span class="fn">utf8_encode</span>(<span class="var">$sms_text</span>));
+
+<span class="var">$ch</span> = <span class="fn">curl_init</span>();
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_URL, <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="num">1</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_POST, <span class="num">1</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_POSTFIELDS,
+    <span class="str">"key={$api_key}&amp;campaign=7017&amp;routeid=210&amp;type=unicode"</span>
+  . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}&amp;msg={$message}"</span>);
+
+<span class="var">$response</span> = <span class="fn">curl_exec</span>(<span class="var">$ch</span>);
+<span class="fn">curl_close</span>(<span class="var">$ch</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+      <div id="un-post-pass" class="tab-content"><pre><span class="cm">// Unicode SMS — HTTP POST / Username &amp; Password (PHP + cURL)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$username</span> = <span class="str">'vrittechnologies'</span>;
+<span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
+<span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
+<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$sms_text</span> = <span class="str">'नमस्ते, Hello in Nepali'</span>;
+<span class="var">$message</span>  = <span class="fn">urlencode</span>(<span class="fn">utf8_encode</span>(<span class="var">$sms_text</span>));
+
+<span class="var">$ch</span> = <span class="fn">curl_init</span>();
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_URL, <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="num">1</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_POST, <span class="num">1</span>);
+<span class="fn">curl_setopt</span>(<span class="var">$ch</span>, CURLOPT_POSTFIELDS,
+    <span class="str">"username={$username}&amp;password={$password}"</span>
+  . <span class="str">"&amp;campaign=7017&amp;routeid=210&amp;type=unicode"</span>
+  . <span class="str">"&amp;contacts={$contacts}&amp;senderid={$from}&amp;msg={$message}"</span>);
+
+<span class="var">$response</span> = <span class="fn">curl_exec</span>(<span class="var">$ch</span>);
+<span class="fn">curl_close</span>(<span class="var">$ch</span>);
+<span class="fn">echo</span> <span class="var">$response</span>;
+<span class="kw">?&gt;</span></pre></div>
+    </div>
+  </div>
+
+  <!-- ===================== CREDIT BALANCE ===================== -->
+  <div class="section" id="credit-balance">
+    <div class="section-tag">Account</div>
+    <h2>Credit Balance API</h2>
+    <p>Check your remaining SMS credits per route. Uses a different URL pattern from the send APIs.</p>
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <span class="endpoint-url">https://sms.vrittechnologies.com/miscapi/<span class="dyn">{API_KEY}</span>/getBalance/true/</span>
+    </div>
+
+    <h3>Parameters</h3>
+    <table class="params-table">
+      <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="param-name">API KEY</span> <span style="font-size:11px;color:var(--muted)">(in URL)</span></td><td>Your API key embedded in the URL path<div class="param-default key-placeholder">YOUR_API_KEY</div></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Response</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">json — success</span></div>
+<pre>[
+  {
+    <span class="str">"ROUTE_ID"</span>: <span class="str">"210"</span>,
+    <span class="str">"ROUTE"</span>:    <span class="str">"VritTech-SMSBIT"</span>,
+    <span class="str">"BALANCE"</span>:  <span class="str">"1500"</span>
+  }
+]</pre>
+    </div>
+
+    <h3>Code Example</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">php</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="cm">// Credit Balance Check (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span> = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$api_url</span> = <span class="str">"https://sms.vrittechnologies.com/miscapi/{$api_key}/getBalance/true/"</span>;
+
+<span class="var">$response</span> = <span class="fn">file_get_contents</span>(<span class="var">$api_url</span>);
+<span class="var">$balance</span>  = <span class="fn">json_decode</span>(<span class="var">$response</span>);
+
+<span class="fn">foreach</span> (<span class="var">$balance</span> <span class="kw">as</span> <span class="var">$route</span>) {
+    <span class="fn">echo</span> <span class="str">"Route: {$route-&gt;ROUTE} | Balance: {$route-&gt;BALANCE}\n"</span>;
+}
+<span class="kw">?&gt;</span></pre>
+    </div>
+  </div>
+
+  <!-- ===================== DLR ===================== -->
+  <div class="section" id="dlr">
+    <div class="section-tag">Account</div>
+    <h2>DLR Fetch API</h2>
+    <p>Retrieve delivery reports for a submitted SMS batch using the shoot ID returned from any send call.</p>
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <span class="endpoint-url">https://sms.vrittechnologies.com/miscapi/<span class="dyn">{API_KEY}</span>/getDLR/<span class="dyn">{SHOOT_ID}</span></span>
+    </div>
+
+    <h3>Parameters</h3>
+    <table class="params-table">
+      <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="param-name">API KEY</span> <span style="font-size:11px;color:var(--muted)">(in URL)</span></td><td>Your API key<div class="param-default key-placeholder">YOUR_API_KEY</div></td></tr>
+        <tr><td><span class="param-name">SHOOT_ID</span> <span style="font-size:11px;color:var(--muted)">(in URL)</span></td><td>The alpha-numeric shoot ID from a previous send response<div class="param-default">e.g. nick51fa4816d8043</div></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Response</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">json — success</span></div>
+<pre>[
+  { <span class="str">"MSISDN"</span>: <span class="str">"98412XXXXX"</span>, <span class="str">"DLR"</span>: <span class="str">"Delivered"</span>, <span class="str">"DESC"</span>: <span class="str">"Message Delivered"</span> },
+  { <span class="str">"MSISDN"</span>: <span class="str">"98876XXXXX"</span>, <span class="str">"DLR"</span>: <span class="str">"Failed"</span>,    <span class="str">"DESC"</span>: <span class="str">"Absent Subscriber"</span> }
+]</pre>
+    </div>
+
+    <h3>Code Example</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">php</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="cm">// DLR Fetch (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span>      = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$sms_shoot_id</span> = <span class="str">'nick51fa4816d8043'</span>; <span class="cm">// replace with your shoot ID</span>
+<span class="var">$api_url</span>      = <span class="str">"https://sms.vrittechnologies.com/miscapi/{$api_key}/getDLR/{$sms_shoot_id}"</span>;
+
+<span class="var">$response</span>  = <span class="fn">file_get_contents</span>(<span class="var">$api_url</span>);
+<span class="var">$dlr_array</span> = <span class="fn">json_decode</span>(<span class="var">$response</span>);
+
+<span class="fn">foreach</span> (<span class="var">$dlr_array</span> <span class="kw">as</span> <span class="var">$dlr</span>) {
+    <span class="fn">echo</span> <span class="str">"{$dlr-&gt;MSISDN}: {$dlr-&gt;DLR} — {$dlr-&gt;DESC}\n"</span>;
+}
+<span class="kw">?&gt;</span></pre>
+    </div>
+  </div>
+
+  <!-- ===================== FETCH API KEY ===================== -->
+  <div class="section" id="fetch-api-key">
+    <div class="section-tag">Account</div>
+    <h2>Fetch API Key</h2>
+    <p>Retrieve your API key programmatically using your username and password. Useful for automated key rotation.</p>
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <span class="endpoint-url">https://sms.vrittechnologies.com/getkey/<span class="dyn">{USERNAME}</span>/<span class="dyn">{PASSWORD}</span></span>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <span>This endpoint requires username + password in the URL path. The API key cannot be used to fetch itself.</span>
+    </div>
+
+    <h3>Parameters</h3>
+    <table class="params-table">
+      <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="param-name">USERNAME</span> <span style="font-size:11px;color:var(--muted)">(in URL)</span></td><td>Your login username<div class="param-default">vrittechnologies</div></td></tr>
+        <tr><td><span class="param-name">PASSWORD</span> <span style="font-size:11px;color:var(--muted)">(in URL)</span></td><td>Your account password</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Response</h3>
+    <div class="response-grid">
+      <div class="response-card success">
+        <div class="response-type">✓ Success</div>
+        <div class="response-example">API-KEY/YOUR_API_KEY</div>
+        <p>The API key is the value after the slash.</p>
+      </div>
+      <div class="response-card error">
+        <div class="response-type">✗ Error</div>
+        <div class="response-example">ERR: INVALID CREDENTIALS</div>
+        <p>Username or password is incorrect.</p>
+      </div>
+    </div>
+
+    <h3>Code Example</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">php</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="cm">// Fetch API Key (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$login_id</span> = <span class="str">'vrittechnologies'</span>;
+<span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
+<span class="var">$api_url</span>  = <span class="str">"https://sms.vrittechnologies.com/getkey/{$login_id}/{$password}"</span>;
+
+<span class="var">$response</span> = <span class="fn">file_get_contents</span>(<span class="var">$api_url</span>);
+
+<span class="cm">// Parse the key from "API-KEY/xxxxxxxx"</span>
+<span class="kw">if</span> (<span class="fn">strpos</span>(<span class="var">$response</span>, <span class="str">'API-KEY/'</span>) === <span class="num">0</span>) {
+    <span class="var">$api_key</span> = <span class="fn">substr</span>(<span class="var">$response</span>, <span class="fn">strlen</span>(<span class="str">'API-KEY/'</span>));
+    <span class="fn">echo</span> <span class="str">"Your API Key: {$api_key}"</span>;
+} <span class="kw">else</span> {
+    <span class="fn">echo</span> <span class="str">"Error: {$response}"</span>;
+}
+<span class="kw">?&gt;</span></pre>
+    </div>
+  </div>
+
+  <!-- ===================== LAST TRANSACTION ===================== -->
+  <div class="section" id="last-transaction">
+    <div class="section-tag">Account</div>
+    <h2>Last Transaction API</h2>
+    <p>Returns full details of the most recent SMS shoot from your account, including submission stats and credit usage.</p>
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <span class="endpoint-url">https://sms.vrittechnologies.com/lasttran/index.php?key=<span class="dyn">{API_KEY}</span></span>
+    </div>
+
+    <h3>Parameters</h3>
+    <table class="params-table">
+      <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="param-name">key</span></td><td>Your API key<div class="param-default key-placeholder">YOUR_API_KEY</div></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Response</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">json — success</span></div>
+<pre>{
+  <span class="str">"response_code"</span>:    <span class="num">200</span>,
+  <span class="str">"response_message"</span>: <span class="str">"success"</span>,
+  <span class="str">"data"</span>: {
+    <span class="str">"submission_time"</span>:      <span class="str">"2026-02-27 13:45:00"</span>,
+    <span class="str">"sms_shoot_id"</span>:        <span class="str">"nick51fa4816d8043"</span>,
+    <span class="str">"sent_via"</span>:            <span class="str">"HTTP-API"</span>,
+    <span class="str">"total_submitted"</span>:     <span class="str">"2"</span>,
+    <span class="str">"duplicates_removed"</span>:  <span class="str">"0"</span>,
+    <span class="str">"invalids_removed"</span>:    <span class="str">"0"</span>,
+    <span class="str">"blacklisted_removed"</span>: <span class="str">"0"</span>,
+    <span class="str">"charges_per_sms"</span>:     <span class="str">"1"</span>,
+    <span class="str">"total_credits_deducted"</span>: <span class="str">"2"</span>,
+    <span class="str">"sms_text"</span>:            <span class="str">"Hello People, have a great day"</span>
+  }
+}</pre>
+    </div>
+
+    <h3>Code Example</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">php</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="cm">// Last Transaction (PHP)</span>
+<span class="kw">&lt;?php</span>
+<span class="var">$api_key</span> = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
+<span class="var">$api_url</span> = <span class="str">"https://sms.vrittechnologies.com/lasttran/index.php?key={$api_key}"</span>;
+
+<span class="var">$response</span> = <span class="fn">file_get_contents</span>(<span class="var">$api_url</span>);
+<span class="var">$data</span>     = <span class="fn">json_decode</span>(<span class="var">$response</span>, <span class="num">true</span>);
+
+<span class="kw">if</span> (<span class="var">$data</span>[<span class="str">'response_code'</span>] === <span class="num">200</span>) {
+    <span class="var">$tx</span> = <span class="var">$data</span>[<span class="str">'data'</span>];
+    <span class="fn">echo</span> <span class="str">"Shoot ID: {$tx['sms_shoot_id']}\n"</span>;
+    <span class="fn">echo</span> <span class="str">"Submitted: {$tx['total_submitted']} | Deducted: {$tx['total_credits_deducted']}\n"</span>;
+    <span class="fn">echo</span> <span class="str">"Message: {$tx['sms_text']}\n"</span>;
+}
+<span class="kw">?&gt;</span></pre>
+    </div>
+  </div>
+
+  <!-- ===================== RESPONSES ===================== -->
+  <div class="section" id="responses">
+    <div class="section-tag">Reference</div>
+    <h2>API Responses</h2>
+    <div class="response-grid">
+      <div class="response-card success">
+        <div class="response-type">✓ Success</div>
+        <div class="response-example">SMS-SHOOT-ID/a7f3b2c1d9e0</div>
+        <p>SMS submitted. Save the alphanumeric ID after the slash to pull delivery reports via DLR API.</p>
+      </div>
+      <div class="response-card error">
+        <div class="response-type">✗ Error</div>
+        <div class="response-example">ERR: INVALID API KEY</div>
+        <p>An error occurred. The message is human-readable — check credentials, parameters, and credit balance.</p>
+      </div>
+    </div>
+
+    <h3>Common Errors</h3>
+    <table class="params-table">
+      <thead><tr><th>Error</th><th>Cause &amp; Fix</th></tr></thead>
+      <tbody>
+        <tr><td><span class="param-name">ERR: INVALID API KEY</span></td><td>Key expired or wrong. Re-fetch via the Fetch API Key endpoint.</td></tr>
+        <tr><td><span class="param-name">ERR: INSUFFICIENT CREDIT</span></td><td>Not enough SMS credits. Top up account balance.</td></tr>
+        <tr><td><span class="param-name">ERR: INVALID SENDER ID</span></td><td>Sender ID not approved. Use only whitelisted Sender IDs.</td></tr>
+        <tr><td><span class="param-name">ERR: NO CONTACTS</span></td><td>Missing or empty contacts parameter.</td></tr>
+        <tr><td><span class="param-name">ERR: EMPTY MESSAGE</span></td><td>The msg parameter is missing or blank.</td></tr>
+        <tr><td><span class="param-name">ERR: INVALID CREDENTIALS</span></td><td>Wrong username or password (Fetch API Key endpoint).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===================== QUICK REF ===================== -->
+  <div class="section" id="quick-ref">
+    <div class="section-tag">Reference</div>
+    <h2>Quick Reference</h2>
+    <table class="params-table">
+      <thead><tr><th>Constant</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><span class="param-name">SMS Endpoint</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">https://sms.vrittechnologies.com/smsapi/index.php</td></tr>
+        <tr><td><span class="param-name">Balance Endpoint</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">https://sms.vrittechnologies.com/miscapi/{key}/getBalance/true/</td></tr>
+        <tr><td><span class="param-name">DLR Endpoint</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">https://sms.vrittechnologies.com/miscapi/{key}/getDLR/{shoot_id}</td></tr>
+        <tr><td><span class="param-name">Fetch Key Endpoint</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">https://sms.vrittechnologies.com/getkey/{username}/{password}</td></tr>
+        <tr><td><span class="param-name">Last Transaction</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">https://sms.vrittechnologies.com/lasttran/index.php?key={key}</td></tr>
+        <tr><td><span class="param-name">API Key</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent)" class="key-placeholder">YOUR_API_KEY</td></tr>
+        <tr><td><span class="param-name">Username</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">vrittechnologies</td></tr>
+        <tr><td><span class="param-name">Default Campaign ID</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">7017</td></tr>
+        <tr><td><span class="param-name">Default Route ID</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">210 (VritTech-SMSBIT)</td></tr>
+        <tr><td><span class="param-name">Schedule Time Format</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">YYYY-MM-DD H:I</td></tr>
+        <tr><td><span class="param-name">Max Message Length</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:12px">720 chars (text/flash) · 70 chars/segment (unicode)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+</div>
+
+<script>
+  // ── Tab switcher ──
+  function switchTab(btn, id) {
+    const block = btn.closest('.code-block');
+    block.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    block.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+
+  // ── Copy button ──
+  function copyCode(btn) {
+    const block = btn.closest('.code-block');
+    const active = block.querySelector('.tab-content.active') || block.querySelector('pre');
+    navigator.clipboard.writeText(active.innerText.trim()).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  // ── Dynamic API key ──
+  const PLACEHOLDER = 'YOUR_API_KEY';
+
+  function setKey(key, statusMsg, statusClass) {
+    document.querySelectorAll('.dyn-key').forEach(el => el.textContent = key);
+    document.querySelectorAll('.key-placeholder').forEach(el => el.textContent = key);
+    const status = document.getElementById('keyStatus');
+    status.textContent = statusMsg;
+    status.className = 'key-status show ' + statusClass;
+    clearTimeout(status._t);
+    status._t = setTimeout(() => status.classList.remove('show'), 4000);
+  }
+
+  function applyKey() {
+    const key = document.getElementById('apiKeyInput').value.trim();
+    if (!key) {
+      const status = document.getElementById('keyStatus');
+      status.textContent = '⚠ Please enter your API key first';
+      status.className = 'key-status show';
+      status.style.color = 'var(--accent3)';
+      clearTimeout(status._t);
+      status._t = setTimeout(() => status.classList.remove('show'), 3000);
+      return;
+    }
+    setKey(key, '✓ Key applied to all examples', 'applied');
+  }
+
+  function generateExampleKey() {
+    // Generate a realistic-looking example key (hex, 14 chars uppercase)
+    const chars = '0123456789ABCDEF';
+    const key = Array.from({length: 14}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    document.getElementById('apiKeyInput').value = key;
+    setKey(key, '⚡ Example key generated — replace with your real key before using in production', 'example');
+  }
+
+  // Apply on Enter key
+  document.getElementById('apiKeyInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') applyKey();
+  });
+
+  // ── Active nav on scroll ──
+  const sections = document.querySelectorAll('.section, .hero');
+  const navLinks = document.querySelectorAll('nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { threshold: 0.25, rootMargin: '-60px 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
