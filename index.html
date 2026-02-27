@@ -147,6 +147,7 @@
   .dyn-key { color: #00e5a0; font-weight: 600; }
   .dyn-user { color: #60a5fa; font-weight: 600; }
   .dyn-pass { color: #f472b6; font-weight: 600; }
+  .dyn-sender { color: #a78bfa; font-weight: 600; }
 
   .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
   .tab-btn { padding: 8px 16px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); font-size: 13px; font-family: 'Inter', sans-serif; font-weight: 600; cursor: pointer; transition: all .15s; margin-bottom: -1px; }
@@ -238,11 +239,18 @@
         <button class="apply-btn" onclick="applyUsername()">Apply</button>
         <button class="gen-btn" onclick="generateExampleUsername()">Generate Example Username</button>
       </div>
-      <div class="key-input-row">
+      <div class="key-input-row" style="margin-bottom:10px">
         <input type="password" id="passwordInput" placeholder="Paste your password here…" spellcheck="false" autocomplete="off">
         <button class="apply-btn" onclick="applyPassword()">Apply</button>
         <button class="gen-btn" onclick="generateExamplePassword()">Generate Example Password</button>
         <button class="gen-btn" id="togglePassBtn" onclick="togglePasswordVisibility()" style="padding:10px 12px;">👁</button>
+      </div>
+      <div class="key-input-row">
+        <input type="text" id="senderInput" placeholder="Paste your Sender ID here…" value="SMSBit" spellcheck="false" autocomplete="off">
+        <button class="apply-btn" onclick="applySender()">Apply</button>
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);border-radius:8px;font-size:12px;color:#a78bfa;white-space:nowrap;">
+          ✓ Recommended: <strong>SMSBit</strong>
+        </div>
       </div>
       <div class="key-status" id="keyStatus"></div>
     </div>
@@ -329,7 +337,7 @@
         <tr><td><span class="param-name">routeid</span></td><td>integer</td><td><span class="param-required">required</span></td><td>Route ID<div class="param-default">Default: 210 (VritTech-SMSBIT)</div></td></tr>
         <tr><td><span class="param-name">type</span></td><td>string</td><td><span class="param-required">required</span></td><td>Must be <code>text</code></td></tr>
         <tr><td><span class="param-name">contacts</span></td><td>string</td><td><span class="param-required">required</span></td><td>Comma-separated 10-digit numbers<div class="param-default">e.g. 9841XXXXXX,9801XXXXXX</div></td></tr>
-        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID</td></tr>
+        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID<div class="param-default">Recommended: <span class="dyn-sender-default" style="color:#a78bfa;font-weight:600">SMSBit</span></div></td></tr>
         <tr><td><span class="param-name">msg</span></td><td>string</td><td><span class="param-required">required</span></td><td>URL-encoded SMS text. Max 720 characters</td></tr>
         <tr><td><span class="param-name">responsetype</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>Response format: <code>http</code>, <code>json</code>, or <code>xml</code></td></tr>
         <tr><td><span class="param-name">time</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>Schedule: <code>YYYY-MM-DD H:I</code>. Leave blank to send immediately</td></tr>
@@ -352,7 +360,7 @@
 <span class="kw">&lt;?php</span>
 <span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
-<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>     = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Hello People, have a great day'</span>);
 
 <span class="var">$api_url</span> = <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>
@@ -367,7 +375,7 @@
 <span class="var">$username</span> = <span class="str">'<span class="dyn-user">YOUR_USERNAME</span>'</span>;
 <span class="var">$password</span> = <span class="str">'<span class="dyn-pass">YOUR_PASSWORD</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
-<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>     = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Hello People, have a great day'</span>);
 
 <span class="var">$api_url</span> = <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>
@@ -382,7 +390,7 @@
 <span class="kw">&lt;?php</span>
 <span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
-<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>     = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Hello People, have a great day'</span>);
 
 <span class="var">$ch</span> = <span class="fn">curl_init</span>();
@@ -402,7 +410,7 @@
 <span class="var">$username</span> = <span class="str">'<span class="dyn-user">YOUR_USERNAME</span>'</span>;
 <span class="var">$password</span> = <span class="str">'<span class="dyn-pass">YOUR_PASSWORD</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
-<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>     = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Hello People, have a great day'</span>);
 
 <span class="var">$ch</span> = <span class="fn">curl_init</span>();
@@ -422,7 +430,7 @@
 <span class="kw">&lt;?php</span>
 <span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX'</span>;
-<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>     = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Your scheduled message here'</span>);
 <span class="var">$time</span>     = <span class="fn">urlencode</span>(<span class="str">'2026-03-01 09:30'</span>); <span class="cm">// YYYY-MM-DD H:I</span>
 
@@ -452,7 +460,7 @@
         <tr><td><span class="param-name">routeid</span></td><td>integer</td><td><span class="param-required">required</span></td><td>Route ID<div class="param-default">Default: 210</div></td></tr>
         <tr><td><span class="param-name">type</span></td><td>string</td><td><span class="param-required">required</span></td><td>Must be <code>flash</code></td></tr>
         <tr><td><span class="param-name">contacts</span></td><td>string</td><td><span class="param-required">required</span></td><td>Comma-separated 10-digit numbers</td></tr>
-        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID</td></tr>
+        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID<div class="param-default">Recommended: <span class="dyn-sender-default" style="color:#a78bfa;font-weight:600">SMSBit</span></div></td></tr>
         <tr><td><span class="param-name">msg</span></td><td>string</td><td><span class="param-required">required</span></td><td>URL-encoded SMS text. Max 720 characters</td></tr>
         <tr><td><span class="param-name">time</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>Schedule: <code>YYYY-MM-DD H:I</code>. Leave blank to send immediately</td></tr>
       </tbody>
@@ -472,7 +480,7 @@
 <span class="kw">&lt;?php</span>
 <span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
-<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>     = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Hello People, have a great day'</span>);
 
 <span class="var">$api_url</span> = <span class="str">"https://sms.vrittechnologies.com/smsapi/index.php"</span>
@@ -486,7 +494,7 @@
 <span class="kw">&lt;?php</span>
 <span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
-<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>     = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Hello People, have a great day'</span>);
 
 <span class="var">$ch</span> = <span class="fn">curl_init</span>();
@@ -505,7 +513,7 @@
 <span class="kw">&lt;?php</span>
 <span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
-<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>     = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Flash message scheduled'</span>);
 <span class="var">$time</span>     = <span class="fn">urlencode</span>(<span class="str">'2026-03-01 09:30'</span>);
 
@@ -535,7 +543,7 @@
         <tr><td><span class="param-name">routeid</span></td><td>integer</td><td><span class="param-required">required</span></td><td>Route ID<div class="param-default">Default: 210</div></td></tr>
         <tr><td><span class="param-name">type</span></td><td>string</td><td><span class="param-required">required</span></td><td>Must be <code>wap</code></td></tr>
         <tr><td><span class="param-name">contacts</span></td><td>string</td><td><span class="param-required">required</span></td><td>Comma-separated 10-digit numbers</td></tr>
-        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID</td></tr>
+        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID<div class="param-default">Recommended: <span class="dyn-sender-default" style="color:#a78bfa;font-weight:600">SMSBit</span></div></td></tr>
         <tr><td><span class="param-name">wap_title</span></td><td>string</td><td><span class="param-required">required</span></td><td>URL-encoded title. Max 60 characters</td></tr>
         <tr><td><span class="param-name">wap_url</span></td><td>string</td><td><span class="param-required">required</span></td><td>URL-encoded link (include protocol: http/wap). Max 100 characters</td></tr>
         <tr><td><span class="param-name">time</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>Schedule: <code>YYYY-MM-DD H:I</code></td></tr>
@@ -555,7 +563,7 @@
 <span class="kw">&lt;?php</span>
 <span class="var">$api_key</span>   = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
 <span class="var">$contacts</span>  = <span class="str">'98412XXXXX,98012XXXXX'</span>;
-<span class="var">$from</span>      = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>      = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$wap_title</span> = <span class="fn">urlencode</span>(<span class="str">'Download Free Wallpapers'</span>);
 <span class="var">$wap_url</span>   = <span class="fn">urlencode</span>(<span class="str">'http://www.mysite.net/wallpapers/'</span>);
 
@@ -571,7 +579,7 @@
 <span class="kw">&lt;?php</span>
 <span class="var">$api_key</span>   = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
 <span class="var">$contacts</span>  = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
-<span class="var">$from</span>      = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>      = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$wap_title</span> = <span class="fn">urlencode</span>(<span class="str">'Download Free Wallpapers'</span>);
 <span class="var">$wap_url</span>   = <span class="fn">urlencode</span>(<span class="str">'http://www.mysite.net/wallpapers/'</span>);
 
@@ -607,7 +615,7 @@
         <tr><td><span class="param-name">routeid</span></td><td>integer</td><td><span class="param-required">required</span></td><td>Route ID<div class="param-default">Default: 210</div></td></tr>
         <tr><td><span class="param-name">type</span></td><td>string</td><td><span class="param-required">required</span></td><td>Must be <code>vcard</code></td></tr>
         <tr><td><span class="param-name">contacts</span></td><td>string</td><td><span class="param-required">required</span></td><td>Comma-separated 10-digit numbers</td></tr>
-        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID</td></tr>
+        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID<div class="param-default">Recommended: <span class="dyn-sender-default" style="color:#a78bfa;font-weight:600">SMSBit</span></div></td></tr>
         <tr><td><span class="param-name">first_name</span></td><td>string</td><td><span class="param-required">required</span></td><td>First name of the contact</td></tr>
         <tr><td><span class="param-name">last_name</span></td><td>string</td><td><span class="param-required">required</span></td><td>Last name of the contact</td></tr>
         <tr><td><span class="param-name">company</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>URL-encoded company name</td></tr>
@@ -631,7 +639,7 @@
 <span class="kw">&lt;?php</span>
 <span class="var">$api_key</span>    = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
 <span class="var">$contacts</span>   = <span class="str">'98412XXXXX,98012XXXXX'</span>;
-<span class="var">$from</span>       = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>       = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$first_name</span> = <span class="str">'Sam'</span>;
 <span class="var">$last_name</span>  = <span class="str">'Walker'</span>;
 <span class="var">$company</span>    = <span class="fn">urlencode</span>(<span class="str">'XYZ Pvt Ltd, CA'</span>);
@@ -653,7 +661,7 @@
 <span class="kw">&lt;?php</span>
 <span class="var">$api_key</span>    = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
 <span class="var">$contacts</span>   = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
-<span class="var">$from</span>       = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>       = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$first_name</span> = <span class="str">'Sam'</span>;
 <span class="var">$last_name</span>  = <span class="str">'Walker'</span>;
 <span class="var">$company</span>    = <span class="fn">urlencode</span>(<span class="str">'XYZ Pvt Ltd, CA'</span>);
@@ -703,7 +711,7 @@
         <tr><td><span class="param-name">routeid</span></td><td>integer</td><td><span class="param-required">required</span></td><td>Route ID<div class="param-default">Default: 210</div></td></tr>
         <tr><td><span class="param-name">type</span></td><td>string</td><td><span class="param-required">required</span></td><td>Must be <code>unicode</code></td></tr>
         <tr><td><span class="param-name">contacts</span></td><td>string</td><td><span class="param-required">required</span></td><td>Comma-separated 10-digit numbers</td></tr>
-        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID</td></tr>
+        <tr><td><span class="param-name">senderid</span></td><td>string</td><td><span class="param-required">required</span></td><td>Approved Sender ID<div class="param-default">Recommended: <span class="dyn-sender-default" style="color:#a78bfa;font-weight:600">SMSBit</span></div></td></tr>
         <tr><td><span class="param-name">msg</span></td><td>string</td><td><span class="param-required">required</span></td><td>UTF-8 then URL-encoded text. Max 720 characters</td></tr>
         <tr><td><span class="param-name">time</span></td><td>string</td><td><span class="param-optional">optional</span></td><td>Schedule: <code>YYYY-MM-DD H:I</code></td></tr>
       </tbody>
@@ -724,7 +732,7 @@
 <span class="kw">&lt;?php</span>
 <span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
-<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>     = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$sms_text</span> = <span class="str">'नमस्ते, Hello in Nepali'</span>;  <span class="cm">// UTF-8 string</span>
 <span class="var">$message</span>  = <span class="fn">urlencode</span>(<span class="fn">utf8_encode</span>(<span class="var">$sms_text</span>));
 
@@ -740,7 +748,7 @@
 <span class="var">$username</span> = <span class="str">'<span class="dyn-user">YOUR_USERNAME</span>'</span>;
 <span class="var">$password</span> = <span class="str">'<span class="dyn-pass">YOUR_PASSWORD</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
-<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>     = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$sms_text</span> = <span class="str">'नमस्ते, Hello in Nepali'</span>;
 <span class="var">$message</span>  = <span class="fn">urlencode</span>(<span class="fn">utf8_encode</span>(<span class="var">$sms_text</span>));
 
@@ -756,7 +764,7 @@
 <span class="kw">&lt;?php</span>
 <span class="var">$api_key</span>  = <span class="str">'<span class="dyn-key">YOUR_API_KEY</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
-<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>     = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$sms_text</span> = <span class="str">'नमस्ते, Hello in Nepali'</span>;
 <span class="var">$message</span>  = <span class="fn">urlencode</span>(<span class="fn">utf8_encode</span>(<span class="var">$sms_text</span>));
 
@@ -777,7 +785,7 @@
 <span class="var">$username</span> = <span class="str">'<span class="dyn-user">YOUR_USERNAME</span>'</span>;
 <span class="var">$password</span> = <span class="str">'<span class="dyn-pass">YOUR_PASSWORD</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
-<span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
+<span class="var">$from</span>     = <span class="str">'<span class="dyn-sender">SMSBit</span>'</span>;
 <span class="var">$sms_text</span> = <span class="str">'नमस्ते, Hello in Nepali'</span>;
 <span class="var">$message</span>  = <span class="fn">urlencode</span>(<span class="fn">utf8_encode</span>(<span class="var">$sms_text</span>));
 
@@ -1056,6 +1064,7 @@
         <tr><td><span class="param-name">Fetch Key Endpoint</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">https://sms.vrittechnologies.com/getkey/{username}/{password}</td></tr>
         <tr><td><span class="param-name">Last Transaction</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">https://sms.vrittechnologies.com/lasttran/index.php?key={key}</td></tr>
         <tr><td><span class="param-name">API Key</span></td><td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--accent)" class="key-placeholder">YOUR_API_KEY</td></tr>
+        <tr><td><span class="param-name">Recommended Sender ID</span></td><td style="font-family:'Fira Code',monospace;font-size:12px;color:#a78bfa" class="dyn-sender">SMSBit</td></tr>
         <tr><td><span class="param-name">Username</span></td><td style="font-family:'Fira Code',monospace;font-size:12px" class="dyn-user">YOUR_USERNAME</td></tr>
         <tr><td><span class="param-name">Default Campaign ID</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">7017</td></tr>
         <tr><td><span class="param-name">Default Route ID</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">210 (VritTech-SMSBIT)</td></tr>
@@ -1117,6 +1126,35 @@
     document.getElementById('apiKeyInput').value = key;
     setKey(key, '⚡ Example key generated — replace with your real key before using in production', 'example');
   }
+
+  // ── Dynamic Sender ID ──
+  function setSender(sender, statusMsg, statusClass) {
+    document.querySelectorAll('.dyn-sender').forEach(el => el.textContent = sender);
+    document.querySelectorAll('.dyn-sender-default').forEach(el => el.textContent = sender);
+    const status = document.getElementById('keyStatus');
+    status.textContent = statusMsg;
+    status.className = 'key-status show ' + statusClass;
+    clearTimeout(status._t);
+    status._t = setTimeout(() => status.classList.remove('show'), 4000);
+  }
+
+  function applySender() {
+    const sender = document.getElementById('senderInput').value.trim();
+    if (!sender) {
+      showStatus('⚠ Please enter a Sender ID first', 'var(--accent3)');
+      return;
+    }
+    setSender(sender, '✓ Sender ID applied to all examples', 'applied');
+  }
+
+  // Pre-apply SMSBit on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    setSender('SMSBit', '', '');
+  });
+
+  document.getElementById('senderInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') applySender();
+  });
 
   // ── Dynamic Password ──
   function setPassword(password, statusMsg, statusClass) {
