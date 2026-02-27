@@ -2,7 +2,7 @@
 
 Live developer reference for the Vrit SMS Gateway API. Built as a static single-page site — zero dependencies, zero build step.
 
-🔗 **Live Docs:** `https://<your-username>.github.io/<repo-name>/`
+🔗 **Live Docs:** https://smsdocs.vrittechnologies.com
 
 ---
 
@@ -31,10 +31,15 @@ Live developer reference for the Vrit SMS Gateway API. Built as a static single-
 
 ## Deploy to GitHub Pages
 
-1. Fork or clone this repo
-2. Go to **Settings → Pages**
-3. Set source to `main` branch, `/ (root)` folder
-4. Click **Save** — your docs will be live in ~60 seconds
+Already live at **https://smsdocs.vrittechnologies.com**
+
+The site auto-deploys on every push to `main`. To update:
+
+```bash
+git add .
+git commit -m "Your update message"
+git push
+```
 
 ## Local Preview
 
