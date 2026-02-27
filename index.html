@@ -22,15 +22,21 @@
   body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.75; font-size: 15px; }
   h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; }
 
-  .layout { display: flex; min-height: 100vh; overflow-x: hidden; }
-  body { overflow-x: hidden; }
+  html, body { height: 100%; overflow-x: hidden; }
+  .layout { display: flex; height: 100vh; overflow: hidden; }
 
   nav {
-    width: 260px; min-width: 260px;
+    width: 260px;
+    min-width: 260px;
+    flex-shrink: 0;
     background: var(--surface);
     border-right: 1px solid var(--border);
     padding: 32px 0;
-    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    height: 100vh;
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
     transition: transform 0.3s ease;
     z-index: 100;
   }
@@ -41,7 +47,14 @@
   nav a { display: block; padding: 9px 24px; font-size: 14px; font-weight: 500; color: #94a3b8; text-decoration: none; transition: all .15s; border-left: 2px solid transparent; }
   nav a:hover, nav a.active { color: var(--accent); border-left-color: var(--accent); background: rgba(0,229,160,.05); }
 
-  main { flex: 1; padding: 60px 64px; max-width: 960px; }
+  main {
+    flex: 1;
+    padding: 60px 64px;
+    max-width: 960px;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 
   /* API KEY BANNER */
   .apikey-banner {
@@ -331,12 +344,16 @@
     nav.open { transform: translateX(0); }
 
     /* Main content takes full width, offset by mobile header */
+    .layout { height: auto; overflow: visible; }
     main {
       width: 100%;
       max-width: 100%;
-      padding: 80px 16px 40px;
+      height: auto;
+      overflow-y: visible;
       overflow-x: hidden;
+      padding: 80px 16px 40px;
     }
+    body { overflow-y: auto; }
 
     /* Hero */
     .hero h1 { font-size: 32px; }
@@ -404,7 +421,7 @@
     .free-title { font-size: 17px; }
     .key-input-row input { font-size: 13px; padding: 9px 12px; }
     #togglePassBtn { flex: 0 0 auto; }
-
+  }
 </style>
 </head>
 <body>
@@ -1537,6 +1554,8 @@
   // ── Active nav on scroll ──
   const sections = document.querySelectorAll('.section, .hero');
   const navLinks = document.querySelectorAll('nav a');
+  const mainEl = document.querySelector('main');
+
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -1544,8 +1563,25 @@
         navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
       }
     });
-  }, { threshold: 0.25, rootMargin: '-60px 0px -60% 0px' });
+  }, {
+    root: mainEl,
+    threshold: 0.2,
+    rootMargin: '-60px 0px -55% 0px'
+  });
   sections.forEach(s => observer.observe(s));
+
+  // Fix anchor scrolling to work inside main scroll container
+  document.querySelectorAll('nav a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const id = link.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if (target && mainEl) {
+        mainEl.scrollTo({ top: target.offsetTop - 32, behavior: 'smooth' });
+      }
+      if (window.innerWidth <= 900) closeSidebar();
+    });
+  });
 </script>
 </body>
 </html>
