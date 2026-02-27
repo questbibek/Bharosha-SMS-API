@@ -146,6 +146,7 @@
   .fn { color: #fbbf24; } .cm { color: #475569; font-style: italic; } .num { color: #f472b6; }
   .dyn-key { color: #00e5a0; font-weight: 600; }
   .dyn-user { color: #60a5fa; font-weight: 600; }
+  .dyn-pass { color: #f472b6; font-weight: 600; }
 
   .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
   .tab-btn { padding: 8px 16px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); font-size: 13px; font-family: 'Inter', sans-serif; font-weight: 600; cursor: pointer; transition: all .15s; margin-bottom: -1px; }
@@ -232,10 +233,16 @@
         <button class="apply-btn" onclick="applyKey()">Apply</button>
         <button class="gen-btn" onclick="generateExampleKey()">Generate Example Key</button>
       </div>
-      <div class="key-input-row">
+      <div class="key-input-row" style="margin-bottom:10px">
         <input type="text" id="usernameInput" placeholder="Paste your username here…" spellcheck="false" autocomplete="off">
         <button class="apply-btn" onclick="applyUsername()">Apply</button>
         <button class="gen-btn" onclick="generateExampleUsername()">Generate Example Username</button>
+      </div>
+      <div class="key-input-row">
+        <input type="password" id="passwordInput" placeholder="Paste your password here…" spellcheck="false" autocomplete="off">
+        <button class="apply-btn" onclick="applyPassword()">Apply</button>
+        <button class="gen-btn" onclick="generateExamplePassword()">Generate Example Password</button>
+        <button class="gen-btn" id="togglePassBtn" onclick="togglePasswordVisibility()" style="padding:10px 12px;">👁</button>
       </div>
       <div class="key-status" id="keyStatus"></div>
     </div>
@@ -279,7 +286,7 @@
       </div>
       <div class="response-card">
         <div class="response-type">Alternative — Username &amp; Password</div>
-        <div class="response-example">username=<span class="dyn-user">YOUR_USERNAME</span>&amp;password=XXXX</div>
+        <div class="response-example">username=<span class="dyn-user">YOUR_USERNAME</span>&amp;password=XXXXamp;password=<span class="dyn-pass">YOUR_PASSWORD</span></div>
         <p>Avoid special characters (&amp;, #, /) in your password as they break query strings.</p>
       </div>
     </div>
@@ -358,7 +365,7 @@
       <div id="ts-get-pass" class="tab-content"><pre><span class="cm">// HTTP GET — Username &amp; Password (PHP)</span>
 <span class="kw">&lt;?php</span>
 <span class="var">$username</span> = <span class="str">'<span class="dyn-user">YOUR_USERNAME</span>'</span>;
-<span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
+<span class="var">$password</span> = <span class="str">'<span class="dyn-pass">YOUR_PASSWORD</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
 <span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
 <span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Hello People, have a great day'</span>);
@@ -393,7 +400,7 @@
       <div id="ts-post-pass" class="tab-content"><pre><span class="cm">// HTTP POST — Username &amp; Password (PHP + cURL)</span>
 <span class="kw">&lt;?php</span>
 <span class="var">$username</span> = <span class="str">'<span class="dyn-user">YOUR_USERNAME</span>'</span>;
-<span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
+<span class="var">$password</span> = <span class="str">'<span class="dyn-pass">YOUR_PASSWORD</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
 <span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
 <span class="var">$msg</span>      = <span class="fn">urlencode</span>(<span class="str">'Hello People, have a great day'</span>);
@@ -731,7 +738,7 @@
       <div id="un-get-pass" class="tab-content"><pre><span class="cm">// Unicode SMS — HTTP GET / Username &amp; Password (PHP)</span>
 <span class="kw">&lt;?php</span>
 <span class="var">$username</span> = <span class="str">'<span class="dyn-user">YOUR_USERNAME</span>'</span>;
-<span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
+<span class="var">$password</span> = <span class="str">'<span class="dyn-pass">YOUR_PASSWORD</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
 <span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
 <span class="var">$sms_text</span> = <span class="str">'नमस्ते, Hello in Nepali'</span>;
@@ -768,7 +775,7 @@
       <div id="un-post-pass" class="tab-content"><pre><span class="cm">// Unicode SMS — HTTP POST / Username &amp; Password (PHP + cURL)</span>
 <span class="kw">&lt;?php</span>
 <span class="var">$username</span> = <span class="str">'<span class="dyn-user">YOUR_USERNAME</span>'</span>;
-<span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
+<span class="var">$password</span> = <span class="str">'<span class="dyn-pass">YOUR_PASSWORD</span>'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
 <span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
 <span class="var">$sms_text</span> = <span class="str">'नमस्ते, Hello in Nepali'</span>;
@@ -929,7 +936,7 @@
 <pre><span class="cm">// Fetch API Key (PHP)</span>
 <span class="kw">&lt;?php</span>
 <span class="var">$login_id</span> = <span class="str">'<span class="dyn-user">YOUR_USERNAME</span>'</span>;
-<span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
+<span class="var">$password</span> = <span class="str">'<span class="dyn-pass">YOUR_PASSWORD</span>'</span>;
 <span class="var">$api_url</span>  = <span class="str">"https://sms.vrittechnologies.com/getkey/{$login_id}/{$password}"</span>;
 
 <span class="var">$response</span> = <span class="fn">file_get_contents</span>(<span class="var">$api_url</span>);
@@ -1110,6 +1117,59 @@
     document.getElementById('apiKeyInput').value = key;
     setKey(key, '⚡ Example key generated — replace with your real key before using in production', 'example');
   }
+
+  // ── Dynamic Password ──
+  function setPassword(password, statusMsg, statusClass) {
+    document.querySelectorAll('.dyn-pass').forEach(el => el.textContent = password);
+    const status = document.getElementById('keyStatus');
+    status.textContent = statusMsg;
+    status.className = 'key-status show ' + statusClass;
+    clearTimeout(status._t);
+    status._t = setTimeout(() => status.classList.remove('show'), 4000);
+  }
+
+  function applyPassword() {
+    const password = document.getElementById('passwordInput').value.trim();
+    if (!password) {
+      showStatus('⚠ Please enter your password first', 'var(--accent3)');
+      return;
+    }
+    setPassword(password, '✓ Password applied to all examples', 'applied');
+  }
+
+  function generateExamplePassword() {
+    const upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+    const lower = 'abcdefghjkmnpqrstuvwxyz';
+    const digits = '23456789';
+    const special = '@!$%&*';
+    const all = upper + lower + digits + special;
+    // Guarantee at least one of each type
+    let pwd = upper[Math.floor(Math.random()*upper.length)]
+            + lower[Math.floor(Math.random()*lower.length)]
+            + digits[Math.floor(Math.random()*digits.length)]
+            + special[Math.floor(Math.random()*special.length)];
+    for (let i = 0; i < 8; i++) pwd += all[Math.floor(Math.random()*all.length)];
+    // Shuffle
+    pwd = pwd.split('').sort(() => Math.random() - 0.5).join('');
+    document.getElementById('passwordInput').value = pwd;
+    setPassword(pwd, '⚡ Example password generated — replace with your real password', 'example');
+  }
+
+  function togglePasswordVisibility() {
+    const input = document.getElementById('passwordInput');
+    const btn = document.getElementById('togglePassBtn');
+    if (input.type === 'password') {
+      input.type = 'text';
+      btn.textContent = '🙈';
+    } else {
+      input.type = 'password';
+      btn.textContent = '👁';
+    }
+  }
+
+  document.getElementById('passwordInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') applyPassword();
+  });
 
   // ── Dynamic Username ──
   function setUsername(username, statusMsg, statusClass) {
