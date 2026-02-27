@@ -178,6 +178,76 @@
 
   code { font-family: 'Fira Code', monospace; font-size: 12px; background: var(--surface2); padding: 2px 6px; border-radius: 4px; color: var(--accent2); }
 
+
+  /* FREE API KEY CARD */
+  .free-api-card {
+    display: flex;
+    gap: 24px;
+    background: linear-gradient(135deg, rgba(0,229,160,.06) 0%, rgba(0,119,255,.06) 100%);
+    border: 1px solid rgba(0,229,160,.2);
+    border-radius: 14px;
+    padding: 28px;
+    margin: 28px 0 0;
+    flex-wrap: wrap;
+  }
+  .free-api-left { flex: 1; min-width: 240px; }
+  .free-api-right { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 16px; min-width: 180px; }
+  .free-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,229,160,.15);
+    border: 1px solid rgba(0,229,160,.3);
+    color: var(--accent);
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    margin-bottom: 10px;
+  }
+  .free-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .free-desc { font-size: 14px; color: #94a3b8; line-height: 1.7; margin-bottom: 16px; }
+  .free-contacts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .contact-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: #94a3b8;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all .15s;
+    font-family: 'Inter', sans-serif;
+  }
+  .contact-pill:hover { border-color: var(--accent); color: var(--accent); }
+  .free-location { font-size: 13px; font-weight: 600; color: var(--text); }
+  .free-address { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .get-key-btn {
+    display: inline-flex;
+    align-items: center;
+    background: var(--accent);
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    transition: opacity .15s;
+    white-space: nowrap;
+  }
+  .get-key-btn:hover { opacity: .85; }
+
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -261,6 +331,25 @@
     <div class="hero-badge">📡 REST API v1</div>
     <h1>SMS API Reference</h1>
     <p>Send SMS messages programmatically via HTTP GET or POST. Built for speed, reliability, and developer ergonomics.</p>
+
+    <div class="free-api-card">
+      <div class="free-api-left">
+        <div class="free-badge">🎁 Free API Key</div>
+        <div class="free-title">Get 100 SMS credits — free</div>
+        <div class="free-desc">Want to integrate SMS into your app or software? Contact us and get a free API key with 100 SMS balance to get started instantly.</div>
+        <div class="free-contacts">
+          <a href="tel:9861601174" class="contact-pill">📞 9861601174</a>
+          <a href="mailto:sms@vrittechnologies.com" class="contact-pill">✉ sms@vrittechnologies.com</a>
+          <a href="mailto:bibek@vrittechnologies.com" class="contact-pill">✉ bibek@vrittechnologies.com</a>
+        </div>
+      </div>
+      <div class="free-api-right">
+        <div class="free-location">📍 Vrit Technologies</div>
+        <div class="free-address">Sankhamul, Kathmandu, Nepal</div>
+        <a href="mailto:sms@vrittechnologies.com,bibek@vrittechnologies.com?subject=Request%20for%20Free%20SMS%20API%20Key%20%E2%80%93%20100%20SMS%20Credits&body=Hello%20Vrit%20Technologies%20Team%2C%0A%0AI%20am%20interested%20in%20integrating%20your%20SMS%20API%20into%20my%20application/software%20and%20would%20like%20to%20request%20a%20free%20API%20key%20with%20100%20SMS%20credits.%0A%0AMy%20Details%3A%0A-----------%0AName%3A%0ACompany/Project%20Name%3A%0APhone%20Number%3A%0AUse%20Case%20%28brief%20description%29%3A%0A%0APlease%20send%20me%20the%20API%20key%20and%20any%20onboarding%20instructions%20at%20your%20earliest%20convenience.%0A%0AThank%20you%2C%0A%5BYour%20Name%5D" class="get-key-btn">Get Free API Key →</a>
+      </div>
+    </div>
+
     <div class="hero-meta">
       <div class="meta-item">
         <span class="meta-label">SMS Endpoint</span>
