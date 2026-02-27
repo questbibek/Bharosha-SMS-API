@@ -145,8 +145,7 @@
   .kw { color: #7c6af7; } .str { color: #86efac; } .var { color: #60a5fa; }
   .fn { color: #fbbf24; } .cm { color: #475569; font-style: italic; } .num { color: #f472b6; }
   .dyn-key { color: #00e5a0; font-weight: 600; }
-  .dyn-key[data-placeholder="true"],
-  pre .dyn-key { color: #00e5a0; }
+  .dyn-user { color: #60a5fa; font-weight: 600; }
 
   .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
   .tab-btn { padding: 8px 16px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); font-size: 13px; font-family: 'Inter', sans-serif; font-weight: 600; cursor: pointer; transition: all .15s; margin-bottom: -1px; }
@@ -227,11 +226,16 @@
   <div class="apikey-banner">
     <div class="key-icon">🔑</div>
     <div style="flex:1">
-      <label>Your API Key — updates all code examples instantly</label>
-      <div class="key-input-row">
+      <label>Your Credentials — updates all code examples instantly</label>
+      <div class="key-input-row" style="margin-bottom:10px">
         <input type="text" id="apiKeyInput" placeholder="Paste your API key here…" spellcheck="false" autocomplete="off">
         <button class="apply-btn" onclick="applyKey()">Apply</button>
         <button class="gen-btn" onclick="generateExampleKey()">Generate Example Key</button>
+      </div>
+      <div class="key-input-row">
+        <input type="text" id="usernameInput" placeholder="Paste your username here…" spellcheck="false" autocomplete="off">
+        <button class="apply-btn" onclick="applyUsername()">Apply</button>
+        <button class="gen-btn" onclick="generateExampleUsername()">Generate Example Username</button>
       </div>
       <div class="key-status" id="keyStatus"></div>
     </div>
@@ -275,7 +279,7 @@
       </div>
       <div class="response-card">
         <div class="response-type">Alternative — Username &amp; Password</div>
-        <div class="response-example">username=vrittechnologies&amp;password=XXXX</div>
+        <div class="response-example">username=<span class="dyn-user">YOUR_USERNAME</span>&amp;password=XXXX</div>
         <p>Avoid special characters (&amp;, #, /) in your password as they break query strings.</p>
       </div>
     </div>
@@ -353,7 +357,7 @@
 <span class="kw">?&gt;</span></pre></div>
       <div id="ts-get-pass" class="tab-content"><pre><span class="cm">// HTTP GET — Username &amp; Password (PHP)</span>
 <span class="kw">&lt;?php</span>
-<span class="var">$username</span> = <span class="str">'vrittechnologies'</span>;
+<span class="var">$username</span> = <span class="str">'<span class="dyn-user">YOUR_USERNAME</span>'</span>;
 <span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
 <span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
@@ -388,7 +392,7 @@
 <span class="kw">?&gt;</span></pre></div>
       <div id="ts-post-pass" class="tab-content"><pre><span class="cm">// HTTP POST — Username &amp; Password (PHP + cURL)</span>
 <span class="kw">&lt;?php</span>
-<span class="var">$username</span> = <span class="str">'vrittechnologies'</span>;
+<span class="var">$username</span> = <span class="str">'<span class="dyn-user">YOUR_USERNAME</span>'</span>;
 <span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
 <span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
@@ -726,7 +730,7 @@
 <span class="kw">?&gt;</span></pre></div>
       <div id="un-get-pass" class="tab-content"><pre><span class="cm">// Unicode SMS — HTTP GET / Username &amp; Password (PHP)</span>
 <span class="kw">&lt;?php</span>
-<span class="var">$username</span> = <span class="str">'vrittechnologies'</span>;
+<span class="var">$username</span> = <span class="str">'<span class="dyn-user">YOUR_USERNAME</span>'</span>;
 <span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX'</span>;
 <span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
@@ -763,7 +767,7 @@
 <span class="kw">?&gt;</span></pre></div>
       <div id="un-post-pass" class="tab-content"><pre><span class="cm">// Unicode SMS — HTTP POST / Username &amp; Password (PHP + cURL)</span>
 <span class="kw">&lt;?php</span>
-<span class="var">$username</span> = <span class="str">'vrittechnologies'</span>;
+<span class="var">$username</span> = <span class="str">'<span class="dyn-user">YOUR_USERNAME</span>'</span>;
 <span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
 <span class="var">$contacts</span> = <span class="str">'98412XXXXX,98012XXXXX,98812XXXXX'</span>;
 <span class="var">$from</span>     = <span class="str">'SENDER_ID'</span>;
@@ -900,7 +904,7 @@
     <table class="params-table">
       <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td><span class="param-name">USERNAME</span> <span style="font-size:11px;color:var(--muted)">(in URL)</span></td><td>Your login username<div class="param-default">vrittechnologies</div></td></tr>
+        <tr><td><span class="param-name">USERNAME</span> <span style="font-size:11px;color:var(--muted)">(in URL)</span></td><td>Your login username<div class="param-default dyn-user-default">YOUR_USERNAME</div></td></tr>
         <tr><td><span class="param-name">PASSWORD</span> <span style="font-size:11px;color:var(--muted)">(in URL)</span></td><td>Your account password</td></tr>
       </tbody>
     </table>
@@ -924,7 +928,7 @@
       <div class="code-header"><span class="code-lang">php</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
 <pre><span class="cm">// Fetch API Key (PHP)</span>
 <span class="kw">&lt;?php</span>
-<span class="var">$login_id</span> = <span class="str">'vrittechnologies'</span>;
+<span class="var">$login_id</span> = <span class="str">'<span class="dyn-user">YOUR_USERNAME</span>'</span>;
 <span class="var">$password</span> = <span class="str">'YOUR_PASSWORD'</span>;
 <span class="var">$api_url</span>  = <span class="str">"https://sms.vrittechnologies.com/getkey/{$login_id}/{$password}"</span>;
 
@@ -1045,7 +1049,7 @@
         <tr><td><span class="param-name">Fetch Key Endpoint</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">https://sms.vrittechnologies.com/getkey/{username}/{password}</td></tr>
         <tr><td><span class="param-name">Last Transaction</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">https://sms.vrittechnologies.com/lasttran/index.php?key={key}</td></tr>
         <tr><td><span class="param-name">API Key</span></td><td style="font-family:'Fira Code',monospace;font-size:12px;color:var(--accent)" class="key-placeholder">YOUR_API_KEY</td></tr>
-        <tr><td><span class="param-name">Username</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">vrittechnologies</td></tr>
+        <tr><td><span class="param-name">Username</span></td><td style="font-family:'Fira Code',monospace;font-size:12px" class="dyn-user">YOUR_USERNAME</td></tr>
         <tr><td><span class="param-name">Default Campaign ID</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">7017</td></tr>
         <tr><td><span class="param-name">Default Route ID</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">210 (VritTech-SMSBIT)</td></tr>
         <tr><td><span class="param-name">Schedule Time Format</span></td><td style="font-family:'Fira Code',monospace;font-size:12px">YYYY-MM-DD H:I</td></tr>
@@ -1094,28 +1098,65 @@
   function applyKey() {
     const key = document.getElementById('apiKeyInput').value.trim();
     if (!key) {
-      const status = document.getElementById('keyStatus');
-      status.textContent = '⚠ Please enter your API key first';
-      status.className = 'key-status show';
-      status.style.color = 'var(--accent3)';
-      clearTimeout(status._t);
-      status._t = setTimeout(() => status.classList.remove('show'), 3000);
+      showStatus('⚠ Please enter your API key first', 'var(--accent3)');
       return;
     }
-    setKey(key, '✓ Key applied to all examples', 'applied');
+    setKey(key, '✓ API key applied to all examples', 'applied');
   }
 
   function generateExampleKey() {
-    // Generate a realistic-looking example key (hex, 14 chars uppercase)
     const chars = '0123456789ABCDEF';
     const key = Array.from({length: 14}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
     document.getElementById('apiKeyInput').value = key;
     setKey(key, '⚡ Example key generated — replace with your real key before using in production', 'example');
   }
 
+  // ── Dynamic Username ──
+  function setUsername(username, statusMsg, statusClass) {
+    document.querySelectorAll('.dyn-user').forEach(el => el.textContent = username);
+    document.querySelectorAll('.dyn-user-default').forEach(el => el.textContent = username);
+    const status = document.getElementById('keyStatus');
+    status.textContent = statusMsg;
+    status.className = 'key-status show ' + statusClass;
+    clearTimeout(status._t);
+    status._t = setTimeout(() => status.classList.remove('show'), 4000);
+  }
+
+  function applyUsername() {
+    const username = document.getElementById('usernameInput').value.trim();
+    if (!username) {
+      showStatus('⚠ Please enter your username first', 'var(--accent3)');
+      return;
+    }
+    setUsername(username, '✓ Username applied to all examples', 'applied');
+  }
+
+  function generateExampleUsername() {
+    const adjectives = ['swift', 'bright', 'solar', 'nova', 'alpha', 'delta', 'prime', 'ultra'];
+    const nouns = ['user', 'dev', 'admin', 'api', 'client', 'sender', 'portal'];
+    const num = Math.floor(Math.random() * 900) + 100;
+    const username = adjectives[Math.floor(Math.random() * adjectives.length)]
+                   + nouns[Math.floor(Math.random() * nouns.length)]
+                   + num;
+    document.getElementById('usernameInput').value = username;
+    setUsername(username, '⚡ Example username generated — replace with your real username', 'example');
+  }
+
+  function showStatus(msg, color) {
+    const status = document.getElementById('keyStatus');
+    status.textContent = msg;
+    status.className = 'key-status show';
+    status.style.color = color;
+    clearTimeout(status._t);
+    status._t = setTimeout(() => status.classList.remove('show'), 3000);
+  }
+
   // Apply on Enter key
   document.getElementById('apiKeyInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') applyKey();
+  });
+  document.getElementById('usernameInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') applyUsername();
   });
 
   // ── Active nav on scroll ──
