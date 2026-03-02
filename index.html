@@ -7,6 +7,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
 <style>
   :root {
+    --bg: #ffffff;
+    --surface: #f8f9fa;
+    --surface2: #f0f2f7;
+    --border: #e0e4e8;
+    --accent: #00b878;
+    --accent2: #0052cc;
+    --accent3: #d1255f;
+    --text: #1a1a1a;
+    --muted: #666666;
+    --code-bg: #f5f6f8;
+  }
+  
+  /* Dark mode variables */
+  html[data-theme="dark"] {
     --bg: #0a0c10;
     --surface: #111318;
     --surface2: #181c24;
@@ -17,6 +31,20 @@
     --text: #e2e8f0;
     --muted: #64748b;
     --code-bg: #0d1017;
+  }
+  
+  /* Light mode variables */
+  html[data-theme="light"] {
+    --bg: #ffffff;
+    --surface: #f8f9fa;
+    --surface2: #f0f2f7;
+    --border: #d0d5db;
+    --accent: #00a862;
+    --accent2: #0052cc;
+    --accent3: #c31d5a;
+    --text: #111827;
+    --muted: #4b5563;
+    --code-bg: #f3f4f6;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.75; font-size: 15px; }
@@ -46,6 +74,10 @@
   .nav-section { padding: 8px 24px; font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: 16px; }
   nav a { display: block; padding: 9px 24px; font-size: 14px; font-weight: 500; color: #94a3b8; text-decoration: none; transition: all .15s; border-left: 2px solid transparent; }
   nav a:hover, nav a.active { color: var(--accent); border-left-color: var(--accent); background: rgba(0,229,160,.05); }
+  
+  /* Light mode nav overrides */
+  html[data-theme="light"] nav a { color: #6b7280; }
+  html[data-theme="light"] nav a:hover, html[data-theme="light"] nav a.active { background: rgba(0,168,98,.08); }
 
   main {
     flex: 1;
@@ -121,7 +153,13 @@
   .hero { margin-bottom: 64px; padding-bottom: 48px; border-bottom: 1px solid var(--border); }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,229,160,.1); border: 1px solid rgba(0,229,160,.2); color: var(--accent); padding: 4px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 20px; }
   .hero h1 { font-size: 52px; font-weight: 800; line-height: 1.1; margin-bottom: 20px; background: linear-gradient(135deg, #fff 0%, #64748b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  
+  /* Light mode hero h1 override */
+  html[data-theme="light"] .hero h1 { background: none; -webkit-text-fill-color: unset; color: #111827; }
   .hero p { font-size: 18px; color: #94a3b8; max-width: 520px; }
+  
+  /* Light mode hero overrides */
+  html[data-theme="light"] .hero p { color: #4b5563; }
   .hero-meta { display: flex; gap: 32px; margin-top: 32px; flex-wrap: wrap; }
   .meta-item { display: flex; flex-direction: column; gap: 4px; }
   .meta-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
@@ -131,8 +169,14 @@
   .section { margin-bottom: 72px; scroll-margin-top: 32px; }
   .section-tag { font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
   .section h2 { font-size: 32px; font-weight: 800; margin-bottom: 16px; color: #fff; }
+  
+  /* Light mode section heading override */
+  html[data-theme="light"] .section h2 { color: #111827; }
   .section h3 { font-size: 20px; font-weight: 700; margin: 32px 0 12px; color: var(--text); }
   .section p { color: #94a3b8; margin-bottom: 16px; font-size: 15px; line-height: 1.8; }
+  
+  /* Light mode section text overrides */
+  html[data-theme="light"] .section p { color: #4b5563; }
 
   .endpoint { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin: 12px 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .method { padding: 4px 12px; border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 12px; font-weight: 700; letter-spacing: .05em; white-space: nowrap; }
@@ -140,10 +184,16 @@
   .method.post { background: rgba(0,229,160,.15); color: var(--accent); border: 1px solid rgba(0,229,160,.3); }
   .endpoint-url { font-family: 'Fira Code', monospace; font-size: 13px; color: #e2e8f0; word-break: break-all; }
   .endpoint-url .dyn { color: var(--accent); }
+  
+  /* Light mode endpoint overrides */
+  html[data-theme="light"] .endpoint-url { color: #111827; }
 
   .params-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; line-height: 1.7; }
   .params-table th { text-align: left; padding: 10px 16px; background: var(--surface2); color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; border-bottom: 1px solid var(--border); }
   .params-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: #94a3b8; vertical-align: top; }
+  
+  /* Light mode table overrides */
+  html[data-theme="light"] .params-table td { color: #4b5563; }
   .params-table tr:last-child td { border-bottom: none; }
   .params-table tr:hover td { background: rgba(255,255,255,.02); }
   .param-name { font-family: 'Fira Code', monospace; color: var(--accent2); font-size: 13px; }
@@ -157,7 +207,7 @@
   .copy-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 4px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all .15s; font-family: 'Inter', sans-serif; }
   .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
   .copy-btn.copied { border-color: var(--accent); color: var(--accent); }
-  pre { padding: 24px; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 13.5px; line-height: 1.9; color: #e2e8f0; }
+  pre { padding: 24px; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 13.5px; line-height: 1.9; color: var(--text); }
 
   .kw { color: #7c6af7; } .str { color: #86efac; } .var { color: #60a5fa; }
   .fn { color: #fbbf24; } .cm { color: #475569; font-style: italic; } .num { color: #f472b6; }
@@ -165,6 +215,18 @@
   .dyn-user { color: #60a5fa; font-weight: 600; }
   .dyn-pass { color: #f472b6; font-weight: 600; }
   .dyn-sender { color: #a78bfa; font-weight: 600; }
+
+  /* Light mode syntax highlighting overrides */
+  html[data-theme="light"] .kw { color: #5e4fa2; }
+  html[data-theme="light"] .str { color: #157f1f; }
+  html[data-theme="light"] .var { color: #0052cc; }
+  html[data-theme="light"] .fn { color: #b65109; }
+  html[data-theme="light"] .cm { color: #6b7280; font-style: italic; }
+  html[data-theme="light"] .num { color: #c31d5a; }
+  html[data-theme="light"] .dyn-key { color: #00a862; }
+  html[data-theme="light"] .dyn-user { color: #0052cc; }
+  html[data-theme="light"] .dyn-pass { color: #c31d5a; }
+  html[data-theme="light"] .dyn-sender { color: #5e4fa2; }
 
   .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
   .tab-btn { padding: 8px 16px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); font-size: 13px; font-family: 'Inter', sans-serif; font-weight: 600; cursor: pointer; transition: all .15s; margin-bottom: -1px; }
@@ -181,6 +243,9 @@
   .response-card.error .response-type { color: var(--accent3); }
   .response-example { font-family: 'Fira Code', monospace; font-size: 12px; background: var(--code-bg); padding: 10px 14px; border-radius: 6px; color: #e2e8f0; margin: 8px 0; word-break: break-all; }
   .response-card p { font-size: 13px; color: var(--muted); margin: 0; }
+  
+  /* Light mode response overrides */
+  html[data-theme="light"] .response-example { color: #111827; }
 
   .api-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 28px 0; }
   @media (min-width: 901px) { .api-grid { grid-template-columns: repeat(3, 1fr) !important; } }
@@ -234,7 +299,36 @@
   .callout-icon { flex-shrink: 0; font-size: 16px; }
   .callout.warning { background: rgba(251,191,36,.07); border-color: rgba(251,191,36,.2); color: #fcd34d; }
 
+  /* Light mode callout overrides */
+  html[data-theme="light"] .callout { background: rgba(0,119,255,.06); border-color: rgba(0,119,255,.3); color: #0052cc; }
+  html[data-theme="light"] .callout.warning { background: rgba(251,191,36,.1); border-color: rgba(251,191,36,.3); color: #b65109; }
+
   code { font-family: 'Fira Code', monospace; font-size: 12px; background: var(--surface2); padding: 2px 6px; border-radius: 4px; color: var(--accent2); }
+
+  /* Theme Toggle Button */
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--muted);
+    transition: all .15s;
+    margin-top: 16px;
+    width: 100%;
+    justify-content: center;
+  }
+  .theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .theme-toggle-icon {
+    font-size: 14px;
+  }
 
 
   /* FREE API KEY CARD */
@@ -271,6 +365,9 @@
     color: #fff;
     margin-bottom: 8px;
   }
+  
+  /* Light mode free-title override */
+  html[data-theme="light"] .free-title { color: #111827; }
   .free-desc { font-size: 14px; color: #94a3b8; line-height: 1.7; margin-bottom: 16px; }
   .free-contacts { display: flex; flex-wrap: wrap; gap: 8px; }
   .contact-pill {
@@ -288,6 +385,10 @@
     font-family: 'Inter', sans-serif;
   }
   .contact-pill:hover { border-color: var(--accent); color: var(--accent); }
+  
+  /* Light mode free section overrides */
+  html[data-theme="light"] .free-desc { color: #4b5563; }
+  html[data-theme="light"] .contact-pill { color: #4b5563; }
   .free-location { font-size: 13px; font-weight: 600; color: var(--text); }
   .free-address { font-size: 12px; color: var(--muted); margin-top: 2px; }
   .get-key-btn {
@@ -480,6 +581,10 @@
   <div class="nav-logo">
     <div class="brand">Vrit Technologies</div>
     <h2>SMS API Docs</h2>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+      <span class="theme-toggle-icon" id="themeIcon">🌙</span>
+      <span id="themeLabel">Dark</span>
+    </button>
   </div>
   <div class="nav-section">Overview</div>
   <a href="#introduction">Introduction</a>
@@ -1615,6 +1720,42 @@
       if (window.innerWidth <= 900) closeSidebar();
     });
   });
+
+  // ── Theme Toggle ──
+  function initThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeLabel = document.getElementById('themeLabel');
+    const html = document.documentElement;
+    
+    // Check for saved theme preference or default to light mode
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+    updateThemeUI(savedTheme);
+    
+    // Theme toggle click handler
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeUI(newTheme);
+    });
+    
+    function updateThemeUI(theme) {
+      if (theme === 'light') {
+        themeIcon.textContent = '🌙';
+        themeLabel.textContent = 'Dark';
+      } else {
+        themeIcon.textContent = '☀️';
+        themeLabel.textContent = 'Light';
+      }
+    }
+  }
+
+  // Initialize theme toggle on document load
+  initThemeToggle();
 </script>
 </body>
 </html>
